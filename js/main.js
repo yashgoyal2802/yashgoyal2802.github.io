@@ -7,7 +7,6 @@ $(document).ready(function () {
       "Public Speaker^2500",
       "Open Source Contributor^2500",
       "Web Developer^2500",
-      "Petrolhead^2500",
       "Music Lover^2500",
     ],
     shuffle: true,
