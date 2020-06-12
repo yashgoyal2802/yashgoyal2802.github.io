@@ -6,7 +6,7 @@ $(document).ready(function () {
       "Flutter Developer^2500",
       "Public Speaker^2500",
       "Open Source Contributor^2500",
-      "YouTube Creator^2500",
+      "Web Developer^2500",
       "Petrolhead^2500",
       "Music Lover^2500",
     ],
