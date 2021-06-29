@@ -1,0 +1,134 @@
+body {
+  font-family: "Montserrat", sans-seri;
+  text-align: center;
+  background-color: #3d3a39;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  font-size: 2rem;
+  padding: 1% 0 0 0;
+  color: #d1ccca;
+}
+
+.top-container {
+  padding: 1% 2%;
+  margin: 5% 0;
+  color: #ffffff;
+  /* background-color: #9c9694; */
+  /* background-image: linear-gradient(to bottom, #2c3e50, #bdc3c7); */
+}
+
+.name {
+  font-family: "Source Code Pro", monospace;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.profile-pic {
+  height: 185px;
+  width: 185px;
+  border-radius: 100px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.4);
+  overflow: auto;
+  max-width: 100%;
+}
+
+p {
+  font-family: "Titillium Web", sans-serif;
+  font-size: 25px;
+  width: 800px;
+  color: #ffffff;
+  max-width: 100%;
+  margin: auto;
+  line-height: 2;
+  text-align: left;
+  padding: 2%;
+}
+
+hr {
+  border-color: #8f8b8a;
+  border-style: none;
+  border-top-style: dotted;
+  border-width: 8px;
+  width: 10%;
+  max-width: 100%;
+  margin: auto;
+}
+
+.container-fluid {
+  padding: 1% 2%;
+}
+
+.middle-container {
+  margin: 5% 0;
+}
+
+#testimonials {
+  /* background-color: #9c9694;
+    background-image: linear-gradient(#bdc3c7, #eeeeee); */
+  color: white;
+}
+
+.testimonial-img {
+  margin: 0px;
+  max-width: 100%;
+  padding: 0 0.5rem 0 0.5rem;
+}
+
+.carousel-control {
+  width: 15%;
+}
+
+.slide__title {
+  font-size: 1.75em;
+  font-weight: normal;
+  margin: 0 auto;
+  /* padding: 1em 0 0 0; */
+}
+
+.slide__title span {
+  font-size: 55%;
+  font-weight: bold;
+  display: block;
+  letter-spacing: 2px;
+  /* text-transform: uppercase; */
+  color: #8d8992;
+}
+
+.social_links {
+  margin: 0 50px;
+  padding: 1% 2%;
+  display: inline-block;
+}
+
+.icons {
+  padding: 1% 2%;
+  color: rgb(177, 171, 171);
+  font-size: 32px;
+}
+
+.bottom-container {
+  /* background-color: #eeeeee; */
+  margin: 5% 0;
+  padding: 0 12% 5% 12%;
+  color: #000000;
+}
+
+.animate__animated.animate__wobble {
+  animation-delay: 0.3s;
+  animation-duration: 1.3s;
+}
+
+#description {
+  font-family: "Source Code Pro", monospace;
+  font-weight: normal;
+  font-size: 20px;
+  color: #ffffff;
+}

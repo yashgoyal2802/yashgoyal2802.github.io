@@ -1,0 +1,329 @@
+/* Your custom css code goes here */
+html {
+  scroll-behavior: smooth;
+}
+body::-webkit-scrollbar{
+  display: none;
+}
+body{
+  overflow-x: hidden;
+}
+
+#slides-text-1{
+  padding-top: 120px;
+}
+#slides-text-2{
+  padding-top: 240px;
+}
+
+#welcome-section {
+  background: #202736;
+  background: linear-gradient(to bottom, #000000 50%, #08412f 80%);
+  background-attachment: fixed;
+  background-size: cover;
+  position: relative;
+  min-height: 100vh;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+#welcome-section::before {
+  content: "";
+  position: fixed;
+  background: url(../img/Stars.svg);
+  background-attachment: fixed;
+  width: 100%;
+  min-height: 100vh;
+  z-index: -1;
+  opacity: 0;
+  /* animation: stars-move-in 1000ms 300ms forwards; */
+}
+.stars{
+  content: "";
+  position: fixed;
+  background: url(../img/Stars.svg);
+  background-attachment: fixed;
+  width: 100%;
+  min-height: 100vh;
+  z-index: -1;
+  opacity: 0;
+  animation: stars-move-in 1000ms 300ms forwards;
+}
+
+.scene{
+    height:100vh;
+}
+
+@keyframes stars-move-in {
+  from {
+    background-position-y: -100px;
+  }
+  to {
+    opacity: 1;
+    background-position-y: 0;
+  }
+}
+
+.forest {
+  position: absolute;
+  bottom: -320px;
+  left: 0;
+  background: url(../img/buildings.svg) bottom left repeat-x ;
+  /* background: url(https://raw.githubusercontent.com/yagoestevez/fcc-portfolio/master/src/Images/Trees.svg?sanitize=true)
+    bottom left repeat-x; */
+  background-size: cover;
+  background-size: 525px;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  animation: forest-move-in 1000ms 500ms forwards;
+  /* border-bottom: 100px solid black; */
+  margin-bottom: 215px;
+  padding-bottom: 100px;
+}
+
+@keyframes forest-move-in {
+  from {
+    background-position-y: 150%;
+  }
+  to {
+    opacity: 1;
+    background-position-y: 100%;
+  }
+}
+
+.silhouette {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: url(../img/me.svg) bottom left no-repeat;
+  width: 100%;
+  height: 102vh;
+  /* height: 80%; */
+  background-size: 700px;
+  opacity: 0; 
+   animation: silhouette-move-in 1000ms 800ms forwards;
+}
+
+@keyframes silhouette-move-in {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    opacity: 1;
+    background-position-x: 50%;
+  }
+}
+
+
+@keyframes moon-move-in {
+  from {
+    opacity: 0;
+    background-position: right 150%;
+  }
+  to {
+    opacity: 1;
+    background-position: top right;
+  }
+}
+
+/* Copy and CTA */
+#welcome-section .container {
+  width: fit-content;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  right: 25%;
+  opacity: 0;
+  transform: translate(0, -50%);
+  animation: text-fade-in 1000ms 800ms forwards;
+}
+
+@keyframes text-fade-in {
+  from {
+    right: 0;
+  }
+  to {
+    opacity: 1;
+    right: 25%;
+  }
+}
+
+#welcome-section .container h1 {
+  font-size: 4rem;
+  font-weight: normal;
+  font-style: italic;
+  color: #fafafa;
+  line-height: 3rem;
+}
+
+#welcome-section .container h1 .line:first-child {
+  margin-left: 1rem;
+}
+
+#welcome-section .container h1 .line:last-child {
+  margin-left: 2rem;
+}
+
+#welcome-section .container .buttons {
+  display: flex;
+  margin-top: 1rem;
+}
+
+#welcome-section .container .buttons a,
+#welcome-section .container .buttons a:visited {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #fafafa;
+  color: #fafafa;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
+#welcome-section .container .buttons a:hover,
+#welcome-section .container .buttons a:active {
+  border: 1px solid #22eaaa;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 100px -20px #22eaaa;
+}
+
+#welcome-section .container .buttons a.cta,
+#welcome-section .container .buttons a.cta:visited {
+  background: #22eaaa;
+  border: 1px solid transparent;
+  color: #fafafa;
+  font-weight: bold;
+}
+
+#welcome-section .container .buttons a.cta:hover,
+#welcome-section .container .buttons a.cta:active {
+  background: transparent;
+  border: 1px solid #22eaaa;
+}
+
+#welcome-section .container .buttons a:first-child {
+  margin-right: 1rem;
+}
+
+.line {
+  display: block;
+}
+
+.color {
+  color: #1aaf80;
+  font-style: italic;
+}
+
+/* @media only screen and (max-width: 649px) { */
+@media only screen and (max-width: 768px) {
+  #welcome-section .container {
+    left: -60%;
+    top: 20%;
+    width: 100%;
+    transform: translate(50%, 0);
+    animation: text-fade-in 1000ms 800ms forwards;
+  }
+  /* #welcome-section .container h1{
+    width: 100%;
+  } */
+
+  @keyframes text-fade-in {
+    from {
+      right: 0;
+    }
+    to {
+      opacity: 1;
+      right: 50%;
+    }
+  }
+
+  .silhouette {
+    width: 100%;
+    background-size: 550px;
+  }
+}
+
+@media only screen and (max-width: 525px) {
+  #welcome-section .container {
+    left: -100%;
+    top: 30%;
+    width: 80%;
+    transform: translate(50%, 0);
+    animation: text-fade-in 1000ms 800ms forwards;
+  }
+  /* #welcome-section .container h1{
+    width: 100%;
+  } */
+
+  @keyframes text-fade-in {
+    from {
+      right: 0;
+    }
+    to {
+      opacity: 1;
+      right: 50%;
+    }
+  }
+
+  .silhouette {
+    /* background-image: none; */
+    width: 100%;
+    margin-top:-50px;
+    background-size: 380px;
+  }
+}
+
+@media only screen and (max-width: 421px) {
+  #welcome-section .container {
+    left: -135%;
+    top: 20%;
+    width: 80%;
+    transform: translate(50%, 0);
+    animation: text-fade-in 1000ms 800ms forwards;
+  }
+  /* #welcome-section .container h1{
+    width: 100%;
+  } */
+
+  @keyframes text-fade-in {
+    from {
+      right: 0;
+    }
+    to {
+      opacity: 1;
+      right: 50%;
+    }
+  }
+
+  .silhouette {
+    /* background-image: none; */
+    width: 100%;
+    margin-top:-100px;
+    background-size: 350px;
+  }
+}
+
+.skills {
+  margin: auto;
+  text-align: center;
+}
+
+#c {
+  margin: auto;
+}
+
+.skills-header {
+  text-align: center;
+  width: 100%;
+  margin: auto;
+  height: 25px;
+}
+
+.pentagon {
+  width: 300px;
+  height: 300px;
+  margin: auto;
+  padding: 3px 3px 28px 3px;
+  display:inline-block;
+}

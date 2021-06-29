@@ -1,192 +1,345 @@
 <!DOCTYPE html>
+
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="Content-Style-Type" content="text/css" />
-    <meta
-      name="viewport"
-      content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"
-    />
 
-    <meta name="author" content="Yash Goyal" />
-    <meta
-      name="description"
-      content="Flutter developer, tech enthusiast, petrolhead and music lover."
-    />
-    <meta
-      name="keywords"
-      content="yash goyal, resume, portfolio, website, cv, programmer, software developer, software engineer, flutter developer, open source, python, dart, front end, computer science, computer engineering, cars, supercars, music, public speaking, tech, technology, smartphones, computers, laptops, android, ios, macos, windows, linux"
-    />
+<head>
+  <link rel="icon" href="favicon.ico">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-166045540-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-    <title>Yash Goyal</title>
-    <link
-      rel="shortcut icon"
-      type="image/ico"
-      href="./assets/favicons/favicon.ico"
-    />
+    gtag('config', 'UA-166045540-1');
+  </script> -->
 
-    <link
-      href="https://fonts.googleapis.com/css?family=Lexend+Deca:400"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"
-      crossorigin="anonymous"
-    />
-    <link href="./css/style.css" rel="stylesheet" type="text/css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yash Goyal</title>
+  <meta name="theme-color" content="#000000">
+  <meta name="description"
+    content="An undergraduate student learning something new everyday to make a difference. This is the portfolio of Yash Goyal.">
+  <meta name="image" content="http://www.yashgoyal.tech/img/user_img.jpg">
 
-    <script
-      src="https://code.jquery.com/jquery-3.4.1.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.9"></script>
-    <script src="./js/main.js"></script>
-  </head>
+  <meta name="keywords"
+    content="yash, yash goyal, goyal,portfolio, developer, coding, music,bit, noida, bit mesra, ieee, dhwani">
 
-  <body>
-    <div id="bg"></div>
-    <header>
-      <div id="title_card" class="card">
-        <div><img id="photo" src="./assets/Yash.png" /></div>
-        <h1 id="name">Yash Goyal</h1>
-        <span id="description"></span>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles-merged.css">
+  <link rel="stylesheet" href="css/style.min.css">
+  <link rel="stylesheet" href="css/custom.css">
+
+  <!--[if lt IE 9]>
+      <script src="js/vendor/html5shiv.min.js"></script>
+      <script src="js/vendor/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+  <!-- START: header -->
+
+  <div class="probootstrap-loader">
+  </div>
+
+  <header role="banner" class="probootstrap-header" style="position: fixed;background-color: rgb(0,0,0,0.8);">
+    <div class="container">
+      <a href="#welcome" class="probootstrap-logo">YG<span>.</span></a>
+
+      <a href="#" class="probootstrap-burger-menu visible-xs"><i>Menu</i></a>
+      <div class="mobile-menu-overlay"></div>
+
+      <nav role="navigation" class="probootstrap-nav hidden-xs">
+        <ul class="probootstrap-main-nav">
+          <li class="active"><a href="#welcome">Home</a></li>
+          <li><a class="nav-link" href="#projects">Projects</a></li>
+          <li><a class="nav-link" href="#skills">Skills</a></li>
+          <li><a class="nav-link" href="#about">About</a></li>
+          <li><a class="nav-link" href="Resume.pdf" target="_blank">Resume</a></li>
+          <li><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+        <ul class="probootstrap-right-nav hidden-xs">
+          <li><a href="https://github.com/yashgoyal2802" target="_blank"><i class="icon-github2"></i></a></li>
+          <li><a href="https://www.linkedin.com/in/yash-goyal-a572a4185/" target="_blank"><i
+                class="icon-linkedin2"></i></a></li>
+          <li><a href="https://www.instagram.com/yg.yashgoyal/" target="_blank"><i class="icon-instagram2"></i></a></li>
+        </ul>
+        <div class="extra-text visible-xs">
+          <a href="#" class="probootstrap-burger-menu"><i>Menu</i></a>
+          <h5>Connect</h5>
+          <ul class="social-buttons">
+            <li><a href="https://github.com/yashgoyal2802" target="_blank"><i class="icon-github2"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/yash-goyal-a572a4185/" target="_blank"><i
+                  class="icon-linkedin2"></i></a>
+            </li>
+            <li><a href="https://www.instagram.com/yg.yashgoyal/" target="_blank"><i class="icon-instagram2"></i></a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+  <!-- END: header -->
+  <section id="welcome" class="probootstrap-section">
+
+    <header id="welcome-section">
+      <div data-hover-only="true" id="scene">
+        <div data-depth="0.1" class="stars"></div>
+        <div data-depth="0.3" class="silhouette"></div>
+      </div>
+      <div class="forest"></div>
+
+      <div class="container" style="width: 970px;">
+        <h1 id="heading-text"><span class="line">I love coding</span><span class="line"></span><span class="line"><span
+              class="color">&amp;</span> music.</span></h1>
       </div>
     </header>
+  </section>
 
-    <main>
-      <div id="info_card" class="card">
-        <section class="tab">
-          <div class="title"><i class="fas fa-info-circle"></i>About Me</div>
-          <div class="content">
-            <section class="element">
-              <div class="info">
-                I'm into tech, programming, cars, music and coffee. I like
-                developing mobile and web apps while listening to some of my
-                playlists on Spotify. Get in touch and let's have a word!
-              </div>
-            </section>
+  <!-- END: slider  -->
+
+  <section id="about" class="probootstrap-section">
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="service left-icon probootstrap-animate">
+
+            <div class="icon">
+              <i class="icon-laptop3"></i>
+            </div>
+            <div class="text">
+              <h3 class="heading">Computer Science and Engineering</h3>
+              <p>Technology thrills me. Keeping up with our small and ever changing world has become a hobby.</p>
+            </div>
+
           </div>
-        </section>
+        </div>
+        <div class="col-md-4">
+          <div class="service left-icon probootstrap-animate">
+            <div class="icon">
+              <i class="icon-global"></i>
+            </div>
+            <div class="text">
+              <h3 class="heading">Web Development </h3>
+              <p>Everyday there is something new to learn in this field. I am trying to make websites in a much more
+                efficient manner than before and still learning to do so.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="service left-icon probootstrap-animate">
+            <div class="icon">
+              <!-- <i class="icon-bar-graph"></i> -->
+              <i class="icon-linegraph"></i>
+              <!-- <i class="icon-pie-chart"></i> -->
+            </div>
+            <div class="text">
+              <h3 class="heading">AI / Machine Learning</h3>
+              <p>I always try to find and solve existing problems by applying Machine Learning Algorithms
+                to make the human life easier.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- END section -->
+
+  <section id="projects" class="probootstrap-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 section-heading probootstrap-animate">
+          <h2>The Projects</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 probootstrap-animate">
+          <div class="probootstrap-card">
+            <div class="probootstrap-card-media">
+              <a href=""><img src="img/CCC-Web.gif" class="img-responsive img-border" alt="CCC Web"></a>
+            </div>
+            <div class="probootstrap-card-text">
+              <h2 class="probootstrap-card-heading mb0">Competitive Coding Club's Website </h2>
+              <p class="category">PHP, HTML, CSS, JavaScript, SQL</p>
+              <p>
+                The Website help's the members of CCC to keep a track of their achievements along
+                with providing them the appropriate resources for preparation and keeping them
+                updated with the dates of upcoming competitions.
+              </p>
+              <p>
+                <span class="icon"><i class="icon-global"></i>&nbsp;</span><a href="https://cccweb.herokuapp.com/"
+                  target="_blank">Live Demo | <span class="icon"><i class="icon-github2"></i>&nbsp;</span><a
+                    href="https://github.com/yashgoyal2802/CCC" target="_blank">Source
+                    Code</a></a></p>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 probootstrap-animate">
+          <div class="probootstrap-card">
+            <div class="probootstrap-card-media">
+              <a href=""><img src="img/enrollar-Web.gif" class="img-responsive img-border" alt="Enrollar"></a>
+            </div>
+            <div class="probootstrap-card-text">
+              <h2 class="probootstrap-card-heading mb0">Enrollar</h2>
+              <p class="category"> React.js, Node.js, Express, MongoDb, CSS</p>
+              <p>
+                A platform which grabs all the best courses from all different sources to one place and curates them in
+                order of customer satisfaction and reviews. So that you can do more of the learning and spend less time
+                searching for the course!
+              </p>
+              <p><i class="icon-global"></i>&nbsp;</span><a href="http://enrollar.herokuapp.com/" target="_blank">Live
+                  Demo | <span class="icon">
+                    <i class="icon-github2"></i>&nbsp;</span><a href="https://github.com/nowmozillaclub/enrollar"
+                    target="_blank">Source Code</a></a></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 probootstrap-animate">
+          <div class="probootstrap-card">
+            <div class="probootstrap-card-media">
+              <a href=""><img src="img/NOW-ToDo-Web.gif" class="img-responsive img-border" alt="Collab"></a>
+            </div>
+            <div class="probootstrap-card-text">
+              <h2 class="probootstrap-card-heading mb0">Collab</h2>
+              <p class="category">Node.js, React.js, HTML, Material UI</p>
+              <p>
+                A Project Collaboration Platform wherein a team can keep a track of their tasks and which person is
+                assigned to it. It also comes with a Statistics page for each Workspace, to get a graphical
+                representation of the data to help everyone understand better.
+              </p>
+              <p>
+                <span class="icon"><i class="icon-global"></i>&nbsp;</span><a
+                  href="https://now-event-project-collab.web.app/" target="_blank">Live Demo | <span class="icon"><i
+                      class="icon-github2"></i>&nbsp;</span><a href="https://github.com/nowmozillaclub/ReactBase"
+                    target="_blank">Source
+                    Code</a></a></p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <div id="skills" class="probootstrap-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12 section-heading probootstrap-animate">
+          <h2>Skills</h2>
+        </div>
+      </div>
+      <div class="row" style="text-align: center;">
+        <div class="col-sm-12 probootstrap-animate">
+          <div class="row skills-graph" style="text-align: center;"></div>
+        </div>
       </div>
 
-      <div id="info_card" class="card">
-        <section class="tab">
-          <div class="title"><i class="fab fa-google-play"></i>My Projects</div>
-          <div class="content">
-            <section class="element">
-              <div class="name">
-                <a
-                  href="https://github.com/yashgoyal2802/TinDog/"
-                  target="_blank"
-                  >TinDog</a
-                >
-              </div>
-              <div class="info">
-                A platform to meet new and interesting dogs nearby.
-              </div>
-            </section>
+    </div>
+  </div>
 
-            <hr />
+  <!-- END section -->
 
-            <section class="element">
-              <div class="name">
-                <a
-                  href="https://github.com/yashgoyal2802/GloClo"
-                  target="_blank"
-                  >GloClo</a
-                >
-              </div>
-              <div class="info">
-                A Flutter App that shows time of any part of the world.
-              </div>
-            </section>
+  <!-- <div id="music" class="container">
+    <div class="probootstrap-cta probootstrap-animate">
+      <h2 class="mb20">I love producing music. </h2>
+      <p>I usually prefer producing music on FL Studio, but for audio editing, Audacity is very easy to use. I have
+        uploaded music on some streaming platforms as well. Care to listen? I am open to feedbacks :)
+      </p>
+      <p><span class="icon"><i class="icon-spotify"></i>&nbsp;</span><a
+          href="https://open.spotify.com/artist/4tQXuIKc8QPdRwjC16MrOe" target="_blank">Spotify</a> | <span
+          class="icon"><i class="icon-youtube"></i>&nbsp;</span><a
+          href="https://www.youtube.com/channel/UCvlnjn_2g6Hb6jVcCY2EOxA" target="_blank">Youtube</a></p>
+    </div>
+  </div> -->
 
-            <hr />
 
-            <section class="element">
-              <div class="name">
-                <a
-                  href="https://github.com/yashgoyal2802/PyPong"
-                  target="_blank"
-                  >PyPong</a
-                >
-              </div>
-              <div class="info">
-                Pong game using Python.
-              </div>
-            </section>
+  <footer id="contact" class="probootstrap-footer probootstrap-bg">
+    <canvas id=q style="    top: 0;
+    position: absolute;
+    z-index: 1;
+    opacity: 0.5;"></canvas>
+
+    <div class="container">
+
+      <div class="row mb60">
+        <div class="col-md-3">
+          <div class="probootstrap-footer-widget">
+            <h4 class="heading">About Yash Goyal</h4>
+            <p style="color: white;">Hailing from Surat, Gujarat, India</p>
+            <p style="color: white;">Third Year CS Undergraduate Student at SVKM'S NMIMS, Mumbai</p>
+            <p><a href="Resume.pdf" target="_blank">Resume</a></p>
           </div>
-        </section>
+        </div>
+        <div class="col-md-3">
+          <div class="probootstrap-footer-widget probootstrap-link-wrap">
+            <h4 class="heading">Quick Links</h4>
+            <ul class="stack-link">
+              <li><i class="icon-linkedin"></i><a href="https://www.linkedin.com/in/yash-goyal-a572a4185/"
+                  target="_blank"> Linkedin</a>
+              </li>
+              <li><i class="icon-facebook"></i><a href="https://www.facebook.com/profile.php?id=100009479367042"
+                  target="_blank">
+                  Facebook</a></li>
+              <li><i class="icon-instagram"></i><a href="https://www.instagram.com/yg.yashgoyal/" target="_blank">
+                  Instagram</a></li>
+              <li><i class="icon-twitter"></i><a href="https://twitter.com/BlackHatGhost" target="_blank"> Twitter</a>
+              </li>
+              <li><i class="icon-mail"></i><a href="mailto:yashdineshgoyal@gmail.com" target="_blank"> Mail</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-3">
+
+        </div>
+        <div class="col-md-3">
+          <div class="probootstrap-footer-widget probootstrap-animate">
+            <div class="probootstrap-card-media">
+              <img class="img-responsive img-border" src="img/LinkedIn-Profile.jpg" alt="authors photo">
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div id="info_card" class="card">
-        <section class="tab">
-          <div class="title"><i class="fas fa-code-branch"></i>Other Work</div>
-          <div class="content">
-            <section class="element">
-              <div class="name">
-                <a href="https://github.com/yashgoyal2802/" target="_blank"
-                  >GitHub</a
-                >
-              </div>
-              <div class="info">
-                1,800+ open source contributions in 1 year!
-              </div>
-            </section>
+      <div class="row copyright">
+        <div class="col-md-6">
+          <div class="probootstrap-footer-widget">
+            <p>&copy; 2021 Yash Goyal</p>
           </div>
-        </section>
+        </div>
+        <div class="col-md-6">
+          <div class="probootstrap-footer-widget right">
+            <ul class="probootstrap-social">
+              <li><a href="https://github.com/yashgoyal2802" target="_blank"><i class="icon-github2"></i></a></li>
+              <li><a href="https://www.linkedin.com/in/yash-goyal-a572a4185/" target="_blank"><i
+                    class="icon-linkedin2"></i></a>
+              </li>
+              <li><a href="https://www.instagram.com/yg.yashgoyal/" target="_blank"><i class="icon-instagram2"></i></a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-    </main>
+    </div>
+  </footer>
 
-    <footer>
-      <div id="social_card" class="card">
-        <section class="tab">
-          <div class="title"><i class="fas fa-users"></i>Connect</div>
-          <div class="content">
-            <div class="social_links">
-              <a href="mailto:yashdineshgoyal@gmail.com"
-                ><i class="fas fa-envelope"></i> Email</a
-              >
-            </div>
 
-            <div class="social_links">
-              <a href="https://www.linkedin.com/in/yash-goyal-a572a4185/"
-                ><i class="fab fa-linkedin"></i> LinkedIn</a
-              >
-            </div>
 
-            <div class="social_links">
-              <a href="https://github.com/yashgoyal2802/"
-                ><i class="fab fa-github"></i> GitHub</a
-              >
-            </div>
-          </div>
-          <div class="content">
-            <div class="social_links">
-              <a href="https://wa.me/919687723927"
-                ><i class="fab fa-whatsapp"></i> WhatsApp</a
-              >
-            </div>
 
-            <div class="social_links">
-              <a href="https://twitter.com/BlackHatGhost"
-                ><i class="fab fa-twitter"></i> Twitter</a
-              >
-            </div>
+  <div class="gototop js-top">
+    <a href="#" class="js-gotop"><i class="icon-chevron-thin-up"></i></a>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
+  <script src="js/scripts.min.js"></script>
+  <script src="js/main.min.js"></script>
+  <script src="js/custom.js"></script>
 
-            <div class="social_links">
-              <a href="https://www.instagram.com/yashgoyal__282/"
-                ><i class="fab fa-instagram"></i> Instagram</a
-              >
-            </div>
-          </div>
-        </section>
-      </div>
-      <a href="Yash's Resume.pdf">
-        <div id="fab"><i class="fas fa-download"></i></div>
-      </a>
-    </footer>
-  </body>
+</body>
+
 </html>
