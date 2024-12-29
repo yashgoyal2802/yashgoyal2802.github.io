@@ -100,9 +100,10 @@ jQuery(document).ready(function () {
   
       // Append the container
       const container = $(
-        `<div class="col-sm-4 polygon" id="${skill.header.toLowerCase()}">
+        `<div class="col-sm-3 polygon" id="${skill.header.toLowerCase()}">
            <div class="skills-header">${skill.header}</div>
-           <canvas class="polyCanvas"/></div>`
+           <canvas class="polyCanvas"/></div>
+         <div class="col-sm-1"></div>`
       );
       
       $(".skills-graph").append(container);
@@ -110,8 +111,8 @@ jQuery(document).ready(function () {
       // Setup canvas
       const canvas = container.find("canvas")[0];
       const ctx = canvas.getContext("2d");
-      const width = container.outerWidth();
-      const height = container.outerHeight();
+      const width = container.width();
+      const height = container.height();
   
       canvas.width = width;
       canvas.height = height;
