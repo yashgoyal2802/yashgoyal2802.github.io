@@ -128,8 +128,11 @@ jQuery(document).ready(function () {
         ctx.beginPath();
         let xy = getXY(i, 0.3, sides, radOffset, width, height);
         let colorJitter = 25 + (i * 255) / sides * theta * 2;
-        ctx.fillStyle = `hsl(${hue}, 100%, ${colorJitter}%)`;
-        ctx.strokeStyle = ctx.fillStyle;
+        color = "hsl(" + hue + ",100%," + colorJitter + "%)";
+        // ctx.fillStyle = `hsl(${hue}, 100%, ${colorJitter}%)`;
+        // ctx.strokeStyle = ctx.fillStyle;
+        ctx.fillStyle = color;
+        ctx.strokeStyle = color;
         ctx.moveTo(width / 2, height / 2);
         ctx.lineTo(xy.x, xy.y);
         xy = getXY(i + 1, 0.3, sides, radOffset, width, height);
