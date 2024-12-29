@@ -157,7 +157,7 @@ jQuery(document).ready(function () {
   
       for (let i = 0; i < sides; i++) {
         // xy = getXY(i, skill.values[i] * 0.3, sides, radOffset, width, height);
-        let xy = getXY(i, skill.values[i] * 0.3);
+        xy = getXY(i, skill.values[i] * 0.3);
         ctx.lineTo(xy.x, xy.y);
       }
       ctx.closePath();
