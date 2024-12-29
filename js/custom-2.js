@@ -61,7 +61,8 @@ jQuery(document).ready(function () {
       }, 40);
   
     // Utility to calculate polygon vertices
-    function getXY(i, radius, sides, radOffset, width, height) {
+    // function getXY(i, radius, sides, radOffset, width, height) {
+    function getXY(i, radius) {
       const theta = (2 * Math.PI) / sides;
       return {
         x: Math.cos(radOffset + theta * i) * radius * width + width / 2,
