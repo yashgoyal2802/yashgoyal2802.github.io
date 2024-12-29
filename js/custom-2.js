@@ -83,8 +83,8 @@ jQuery(document).ready(function () {
       },
       {
         header: "Interests",
-        captions: ["Music", "ML", "Security", "Web", "CP"],
-        values: [0.5, 0.8, 0.5, 0.7, 0.8],
+        captions: ["Music", "Painting", "Badminton", "Swimming", "Chess"],
+        values: [0.9, 0.6, 0.7, 0.7, 0.5],
       },
     ];
   
@@ -126,19 +126,19 @@ jQuery(document).ready(function () {
       /*** BACKGROUND POLYGON ***/
       for (let i = 0; i < sides; i++) {
         ctx.beginPath();
-        let xy = getXY(i, 0.3, sides, radOffset, width, height);
+        // let xy = getXY(i, 0.3, sides, radOffset, width, height);
+        let xy = getXY(i, 0.3);
         // let colorJitter = 25 + (i * 255) / sides * theta * 2;
         let colorJitter = 25 +  theta * i * 2;
-        // color = "hsl(" + hue + ",100%," + colorJitter + "%)";
         ctx.fillStyle = `hsl(${hue}, 100%, ${colorJitter}%)`;
         ctx.strokeStyle = ctx.fillStyle;
-        // ctx.fillStyle = color;
-        // ctx.strokeStyle = color;
         ctx.moveTo(width / 2, height / 2);
         ctx.lineTo(xy.x, xy.y);
-        xy = getXY(i + 1, 0.3, sides, radOffset, width, height);
+        // xy = getXY(i + 1, 0.3, sides, radOffset, width, height);
+        xy = getXY(i, 0.3);
         ctx.lineTo(xy.x, xy.y);
-        xy = getXY(i, 0.39, sides, radOffset, width, height);
+        // xy = getXY(i, 0.39, sides, radOffset, width, height);
+        xy = getXY(i, 0.39);
         ctx.fillText(skill.captions[i], xy.x, xy.y + 3);
         ctx.closePath();
         ctx.fill();
@@ -151,11 +151,13 @@ jQuery(document).ready(function () {
       ctx.strokeStyle = "rgba(0, 0, 0, 0.3)";
       ctx.lineWidth = 5;
   
-      let xy = getXY(0, skill.values[0] * 0.3, sides, radOffset, width, height);
+      // let xy = getXY(0, skill.values[0] * 0.3, sides, radOffset, width, height);
+      let xy = getXY(0, skill.values[0] * 0.3);
       ctx.moveTo(xy.x, xy.y);
   
       for (let i = 0; i < sides; i++) {
-        xy = getXY(i, skill.values[i] * 0.3, sides, radOffset, width, height);
+        // xy = getXY(i, skill.values[i] * 0.3, sides, radOffset, width, height);
+        let xy = getXY(i, skill.values[i] * 0.3);
         ctx.lineTo(xy.x, xy.y);
       }
       ctx.closePath();
