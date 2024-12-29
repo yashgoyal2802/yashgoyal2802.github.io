@@ -62,9 +62,9 @@ jQuery(document).ready(function () {
 
   var skills = [
     {
-      header: "Interests",
-      captions: ["Music", "ML", "Security", "Web", "CP"],
-      values: [0.5, 0.8, 0.5, 0.7, 0.8],
+      header: "DevOps",
+      captions: ["Artifactory", "Kubernetes", "Terraform", "Helm", "Git", "Docker"],
+      values: [0.9, 0.9, 0.8, 0.8, 0.9, 0.9],
     },
     {
       header: "Languages/Frameworks",
@@ -72,9 +72,9 @@ jQuery(document).ready(function () {
       values: [0.65, 0.7, 0.8, 0.4, 0.7],
     },
     {
-      header: "Dev Tools",
-      captions: ["Bootstrap", "Express", "Android Studio", "MongoDB", "Git"],
-      values: [0.7, 0.6, 0.6, 0.7, 0.6],
+      header: "Interests",
+      captions: ["Music", "ML", "Security", "Web", "CP"],
+      values: [0.5, 0.8, 0.5, 0.7, 0.8],
     },
   ];
 
