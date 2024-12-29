@@ -119,8 +119,8 @@ jQuery(document).ready(function () {
       ctx.textAlign = "center";
   
       /*** LABEL ***/
-      ctx.fillStyle = `hsl(${hue}, 100%, 50%)`;
-      ctx.fillText(skill.header, width / 2, 15);
+    //   ctx.fillStyle = `hsl(${hue}, 100%, 50%)`;
+    //   ctx.fillText(skill.header, width / 2, 15);
   
       /*** BACKGROUND POLYGON ***/
       for (let i = 0; i < sides; i++) {
@@ -146,11 +146,11 @@ jQuery(document).ready(function () {
       ctx.strokeStyle = "rgba(0, 0, 0, 0.3)";
       ctx.lineWidth = 5;
   
-      let xy = getXY(0, skill.values[0] * 0.3, sides, radOffset, width, height);
+      let xy = getXY(0, skill.values[0] * 0.4, sides, radOffset, width, height);
       ctx.moveTo(xy.x, xy.y);
   
       for (let i = 0; i < sides; i++) {
-        xy = getXY(i, skill.values[i] * 0.3, sides, radOffset, width, height);
+        xy = getXY(i, skill.values[i] * 0.4, sides, radOffset, width, height);
         ctx.lineTo(xy.x, xy.y);
       }
       ctx.closePath();
