@@ -96,6 +96,7 @@ jQuery(document).ready(function () {
     skills.forEach((skill, index) => {
       const sides = skill.captions.length; // Number of sides based on data points
       const hue = (hueOffset + (index * 255) / skills.length) % 255;
+      const theta = (2 * Math.PI) / sides;
   
       // Append the container
       const container = $(
@@ -126,7 +127,7 @@ jQuery(document).ready(function () {
       for (let i = 0; i < sides; i++) {
         ctx.beginPath();
         let xy = getXY(i, 0.3, sides, radOffset, width, height);
-        let colorJitter = 25 + (i * 255) / sides;
+        let colorJitter = 25 + (i * 255) / sides * theta * 2;
         ctx.fillStyle = `hsl(${hue}, 100%, ${colorJitter}%)`;
         ctx.strokeStyle = ctx.fillStyle;
         ctx.moveTo(width / 2, height / 2);
@@ -146,11 +147,11 @@ jQuery(document).ready(function () {
       ctx.strokeStyle = "rgba(0, 0, 0, 0.3)";
       ctx.lineWidth = 5;
   
-      let xy = getXY(0, skill.values[0] * 0.4, sides, radOffset, width, height);
+      let xy = getXY(0, skill.values[0] * 0.3, sides, radOffset, width, height);
       ctx.moveTo(xy.x, xy.y);
   
       for (let i = 0; i < sides; i++) {
-        xy = getXY(i, skill.values[i] * 0.4, sides, radOffset, width, height);
+        xy = getXY(i, skill.values[i] * 0.3, sides, radOffset, width, height);
         ctx.lineTo(xy.x, xy.y);
       }
       ctx.closePath();
