@@ -61,8 +61,7 @@ jQuery(document).ready(function () {
       }, 40);
   
     // Utility to calculate polygon vertices
-    // function getXY(i, radius, sides, radOffset, width, height) {
-    function getXY(i, radius) {
+    function getXY(i, radius, sides, radOffset, width, height) {
       const theta = (2 * Math.PI) / sides;
       return {
         x: Math.cos(radOffset + theta * i) * radius * width + width / 2,
@@ -127,19 +126,16 @@ jQuery(document).ready(function () {
       /*** BACKGROUND POLYGON ***/
       for (let i = 0; i < sides; i++) {
         ctx.beginPath();
-        // let xy = getXY(i, 0.3, sides, radOffset, width, height);
-        let xy = getXY(i, 0.3);
+        let xy = getXY(i, 0.3, sides, radOffset, width, height);
         // let colorJitter = 25 + (i * 255) / sides * theta * 2;
         let colorJitter = 25 +  theta * i * 2;
         ctx.fillStyle = `hsl(${hue}, 100%, ${colorJitter}%)`;
         ctx.strokeStyle = ctx.fillStyle;
         ctx.moveTo(width / 2, height / 2);
         ctx.lineTo(xy.x, xy.y);
-        // xy = getXY(i + 1, 0.3, sides, radOffset, width, height);
-        xy = getXY(i, 0.3);
+        xy = getXY(i + 1, 0.3, sides, radOffset, width, height);
         ctx.lineTo(xy.x, xy.y);
-        // xy = getXY(i, 0.39, sides, radOffset, width, height);
-        xy = getXY(i, 0.39);
+        xy = getXY(i, 0.39, sides, radOffset, width, height);
         ctx.fillText(skill.captions[i], xy.x, xy.y + 3);
         ctx.closePath();
         ctx.fill();
@@ -152,13 +148,11 @@ jQuery(document).ready(function () {
       ctx.strokeStyle = "rgba(0, 0, 0, 0.3)";
       ctx.lineWidth = 5;
   
-      // let xy = getXY(0, skill.values[0] * 0.3, sides, radOffset, width, height);
-      let xy = getXY(0, skill.values[0] * 0.3);
+      let xy = getXY(0, skill.values[0] * 0.3, sides, radOffset, width, height);
       ctx.moveTo(xy.x, xy.y);
   
       for (let i = 0; i < sides; i++) {
-        // xy = getXY(i, skill.values[i] * 0.3, sides, radOffset, width, height);
-        xy = getXY(i, skill.values[i] * 0.3);
+        xy = getXY(i, skill.values[i] * 0.3, sides, radOffset, width, height);
         ctx.lineTo(xy.x, xy.y);
       }
       ctx.closePath();
