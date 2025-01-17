@@ -321,8 +321,6 @@ body{
 }
 
 .skills-container{
-  height: 100vh;
-  width: 100vw;
   margin: 0;
   padding: 0;
   display: flex;
