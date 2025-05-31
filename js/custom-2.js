@@ -167,37 +167,17 @@ jQuery(document).ready(function () {
   });
 
 
-// Enhanced Skills Section JavaScript
+// Skills Section Animations - Dark Theme
 $(document).ready(function() {
-  // Animate progress bars when they come into view
-  function animateProgressBars() {
-    $('.progress-fill').each(function() {
-      const $this = $(this);
-      const width = $this.data('width');
-      
-      $this.css('width', width);
-    });
-  }
-  
-  // Animate skill categories when they come into view
-  function animateSkillCategories() {
-    $('.skill-category').each(function(index) {
-      const $this = $(this);
-      setTimeout(() => {
-        $this.addClass('animate');
-      }, index * 200);
-    });
-  }
-  
   // Intersection Observer for scroll animations
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        if (entry.target.classList.contains('skills-progress-section')) {
-          animateProgressBars();
+        if (entry.target.classList.contains('skill-category-wrapper')) {
+          entry.target.classList.add('animate');
         }
-        if (entry.target.classList.contains('skills-categories')) {
-          animateSkillCategories();
+        if (entry.target.classList.contains('summary-item')) {
+          entry.target.classList.add('animate');
         }
       }
     });
@@ -205,26 +185,31 @@ $(document).ready(function() {
     threshold: 0.3
   });
   
-  // Observe elements
-  document.querySelector('.skills-progress-section') && 
-    observer.observe(document.querySelector('.skills-progress-section'));
-  document.querySelector('.skills-categories') && 
-    observer.observe(document.querySelector('.skills-categories'));
+  // Observe skill categories
+  document.querySelectorAll('.skill-category-wrapper').forEach(el => {
+    observer.observe(el);
+  });
   
-  // Add hover effects for skill tags
-  $('.skill-tag').hover(
-    function() {
-      $(this).siblings().css('opacity', '0.6');
-    },
-    function() {
-      $(this).siblings().css('opacity', '1');
-    }
-  );
+  // Observe summary items
+  document.querySelectorAll('.summary-item').forEach(el => {
+    observer.observe(el);
+  });
   
-  // Add click functionality to skill tags (could show more info)
-  $('.skill-tag').click(function() {
-    const skillName = $(this).text();
-    console.log(`Clicked on skill: ${skillName}`);
-    // You could add a modal or tooltip with more information about the skill
+  // Animate skill levels when visible
+  const skillsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const skillLevels = entry.target.querySelectorAll('.skill-level');
+        skillLevels.forEach((level, index) => {
+          setTimeout(() => {
+            level.style.opacity = '1';
+          }, index * 100);
+        });
+      }
+    });
+  }, { threshold: 0.5 });
+  
+  document.querySelectorAll('.skill-category-card').forEach(card => {
+    skillsObserver.observe(card);
   });
 });
