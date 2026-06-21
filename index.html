@@ -1,424 +1,243 @@
 <!DOCTYPE html>
-
-<html lang="en">
-
+<html lang="en" data-theme="dark">
 <head>
-  <link rel="icon" href="favicon.ico">
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-166045540-1"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <!-- Open Graph / LinkedIn / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yashgoyal2802.github.io/">
+    <meta property="og:title" content="Yash Goyal | Product Management & Tech Consulting">
+    <meta property="og:description" content="Portfolio of Yash Goyal - MBA Candidate at SPJIMR & Ex-Senior DevOps Engineer targeting Product Management and Tech Consulting.">
+    <meta property="og:image" content="https://yashgoyal2802.github.io/assets/profile-pic.png">
 
-    gtag('config', 'UA-166045540-1');
-  </script> -->
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://yashgoyal2802.github.io/">
+    <meta property="twitter:title" content="Yash Goyal | Product Management & Tech Consulting">
+    <meta property="twitter:description" content="Portfolio of Yash Goyal - MBA Candidate at SPJIMR & Ex-Senior DevOps Engineer targeting Product Management and Tech Consulting.">
+    <meta property="twitter:image" content="https://yashgoyal2802.github.io/assets/profile-pic.png">
+    <title>Yash Goyal | Product Management & Tech Consulting</title>
+    <meta name="description" content="Portfolio of Yash Goyal - MBA Candidate at SPJIMR & Ex-Senior DevOps Engineer targeting Product Management and Tech Consulting.">
+    <!-- Google Fonts: Inter for clean readability and Outfit for modern headers -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Boxicons for icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Yash Goyal</title>
-  <meta name="theme-color" content="#000000">
-  <meta name="description"
-    content="An undergraduate student learning something new everyday to make a difference. This is the portfolio of Yash Goyal.">
-  <meta name="image" content="http://www.yashgoyal.tech/img/user_img.jpg">
-
-  <meta name="keywords"
-    content="yash, yash goyal, goyal,portfolio, developer, coding, music,bit, noida, bit mesra, ieee, dhwani">
-
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
-
-  <link rel="stylesheet" href="css/styles-merged.css">
-  <link rel="stylesheet" href="css/style.min.css">
-  <link rel="stylesheet" href="css/custom.css">
-
-  <!--[if lt IE 9]>
-      <script src="js/vendor/html5shiv.min.js"></script>
-      <script src="js/vendor/respond.min.js"></script>
-    <![endif]-->
+    <script type="application/ld+json">
+        {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Yash Goyal",
+        "jobTitle": "MBA Candidate & Ex-Senior DevOps Engineer at Incedo",
+        "url": "https://yashgoyal2802.github.io/",
+        "sameAs": [
+            "https://linkedin.com/in/yashgoyal2802",
+            "https://github.com/yashgoyal2802"
+        ],
+        "alumniOf": [
+            {
+            "@type": "CollegeOrUniversity",
+            "name": "S.P. Jain Institute of Management & Research (SPJIMR)"
+            },
+            {
+            "@type": "CollegeOrUniversity",
+            "name": "Narsee Monjee Institute of Management Studies (NMIMS)"
+            }
+        ]
+        }
+    </script>
 </head>
-
 <body>
-
-  <!-- START: header -->
-
-  <div class="probootstrap-loader">
-  </div>
-
-  <header role="banner" class="probootstrap-header" style="position: fixed;background-color: rgb(0,0,0,0.8);">
-    <div class="container">
-      <a href="#welcome" class="probootstrap-logo">YG<span>.</span></a>
-
-      <a href="#" class="probootstrap-burger-menu visible-xs"><i>Menu</i></a>
-      <div class="mobile-menu-overlay"></div>
-
-      <nav role="navigation" class="probootstrap-nav hidden-xs">
-        <ul class="probootstrap-main-nav">
-          <li class="active"><a href="#welcome">Home</a></li>
-          <li><a class="nav-link" href="#projects">Projects</a></li>
-          <li><a class="nav-link" href="#skills">Skills</a></li>
-          <li><a class="nav-link" href="#about">About</a></li>
-          <li><a class="nav-link" href="Yash-devOps-resume.pdf" target="_blank">Resume</a></li>
-          <li><a class="nav-link" href="#contact">Contact</a></li>
-        </ul>
-        <ul class="probootstrap-right-nav hidden-xs">
-          <li><a href="https://github.com/yashgoyal2802" target="_blank"><i class="icon-github2"></i></a></li>
-          <li><a href="https://www.linkedin.com/in/yash-goyal-a572a4185/" target="_blank"><i
-                class="icon-linkedin2"></i></a></li>
-          <li><a href="https://www.instagram.com/yg.yashgoyal/" target="_blank"><i class="icon-instagram2"></i></a></li>
-        </ul>
-        <div class="extra-text visible-xs">
-          <a href="#" class="probootstrap-burger-menu"><i>Menu</i></a>
-          <h5>Connect</h5>
-          <ul class="social-buttons">
-            <li><a href="https://github.com/yashgoyal2802" target="_blank"><i class="icon-github2"></i></a></li>
-            <li><a href="https://www.linkedin.com/in/yash-goyal-a572a4185/" target="_blank"><i
-                  class="icon-linkedin2"></i></a>
-            </li>
-            <li><a href="https://www.instagram.com/yg.yashgoyal/" target="_blank"><i class="icon-instagram2"></i></a>
-            </li>
-          </ul>
+    <!-- Navbar -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="#" class="logo">YG</a>
+            <nav class="nav-links">
+                <a href="#about" class="nav-link active">About</a>
+                <a href="#experience" class="nav-link">Experience</a>
+                <a href="#education" class="nav-link">Education</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#skills" class="nav-link">Skills</a>
+            </nav>
+            <div class="nav-controls">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark/Light Mode">
+                    <i class='bx bx-sun' id="theme-icon"></i>
+                </button>
+            </div>
         </div>
-      </nav>
-    </div>
-  </header>
-  <!-- END: header -->
-  <section id="welcome" class="probootstrap-section">
-
-    <header id="welcome-section">
-      <div data-hover-only="true" id="scene">
-        <div data-depth="0.1" class="stars"></div>
-        <div data-depth="0.3" class="silhouette"></div>
-      </div>
-      <div class="forest"></div>
-
-      <div class="container" style="width: 970px;">
-        <h1 id="heading-text"><span class="line">I love coding</span><span class="line"></span><span class="line"><span
-              class="color">&amp;</span> music.</span></h1>
-      </div>
     </header>
-  </section>
 
-  <!-- END: slider  -->
-
-  <section id="about" class="probootstrap-section">
-
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          <div class="service left-icon probootstrap-animate">
-
-            <div class="icon">
-              <i class="icon-laptop3"></i>
+    <main>
+        <!-- Hero / Bio Section -->
+        <section id="about" class="hero section">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="animate-up">Hi, I'm <span class="highlight">Yash Goyal</span></h1>
+                    <h2 class="animate-up delay-1">MBA Candidate @ SPJIMR | Ex-Senior DevOps Engineer</h2>
+                    <h3 class="animate-up delay-2">Building toward Product Management in Cyber Security</h3>
+                    <p class="animate-up delay-3">
+                        Engineer-turned-MBA with 4+ years of experience bridging the gap between business strategy and deep technical execution. Proven track record of operating as a single point of contact for enterprise clients, managing cross-functional teams, and driving product delivery roadmaps. Hands-on domain expertise in <span class="highlight">Cyber Security</span>, translating complex technical risks into strategic business value.
+                    </p>
+                    <div class="hero-actions animate-up delay-4">
+                        <a href="assets/resume.pdf" download="Yash_Goyal_Resume.pdf" class="btn btn-primary">
+                            <i class='bx bxs-file-pdf'></i> Download Resume
+                        </a>
+                        <a href="mailto:yashdineshgoyal@gmail.com" class="btn btn-secondary">
+                            <i class='bx bxs-envelope'></i> Contact Me
+                        </a>
+                    </div>
+                    <div class="social-links animate-up delay-5">
+                        <a href="https://linkedin.com/in/yashgoyal2802" target="_blank" aria-label="LinkedIn"><i class='bx bxl-linkedin-square'></i></a>
+                        <a href="https://yashgoyal2802.github.io" target="_blank" aria-label="GitHub"><i class='bx bxl-github'></i></a>
+                    </div>
+                </div>
+                <div class="hero-image animate-in-right">
+                    <img src="assets/profile-pic.png" alt="Yash Goyal" class="profile-pic">
+                </div>
             </div>
-            <div class="text">
-              <h3 class="heading">Computer Science and Engineering</h3>
-              <p>Technology thrills me. Keeping up with our small and ever changing world has become a hobby.</p>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="section">
+            <div class="section-container">
+                <h2 class="section-title">Experience</h2>
+                
+                <div class="timeline">
+                    <div class="timeline-item reveal">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <div>
+                                    <h3>Senior DevOps Engineer</h3>
+                                    <h4>Incedo Inc. | A10 Networks Account | Pune, IN</h4>
+                                </div>
+                                <span class="timeline-date">Jul 2022 – Jan 2026</span>
+                            </div>
+                            <ul class="timeline-details">
+                                <li><strong>Dedicated Account Ownership:</strong> Served as the sole embedded engineer for A10 Networks for 3.5 years, developing deep firsthand insight into enterprise DDoS mitigation gaps — including unmet demand from mid-market APAC customers later validated in independent market research.</li>
+                                <li><strong>Client Requirements & Roadmap:</strong> Managed end-to-end delivery roadmaps as the primary client liaison, translating business objectives into prioritized backlogs and aligning cross-functional teams.</li>
+                                <li><strong>Platform Product Delivery:</strong> Led scoping and delivery of an internal developer platform, driving adoption across 30+ developers by aligning stakeholders on requirements and success metrics.</li>
+                                <li><strong>Cross-functional Leadership & Release Ownership:</strong> Standardized deployment environments and owned end-to-end release planning, executing 20+ production releases with 100% on-time delivery.</li>
+                                <li><strong>Hackathon Winner (Game of Regions):</strong> Led team "Valar Deceptis" to build a Region Predictor tool using RAG and LLMs for real-time threat intelligence, adopted by the client as a live product.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </section>
 
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="service left-icon probootstrap-animate">
-            <div class="icon">
-              <i class="icon-global"></i>
+        <!-- Education Section -->
+        <section id="education" class="section alt-bg">
+            <div class="section-container">
+                <h2 class="section-title">Education</h2>
+                
+                <div class="card-grid">
+                    <div class="card reveal">
+                        <div class="card-icon"><i class='bx bxs-graduation'></i></div>
+                        <div class="card-header">
+                            <h3>S.P. Jain Institute of Management & Research (SPJIMR)</h3>
+                            <span class="card-location">Mumbai, IN</span>
+                        </div>
+                        <p class="card-subtitle">PGPM <span>(Current)</span></p>
+                        <ul class="card-details">
+                            <li><strong>Case Competitions:</strong> InsightX, Consultathon 5.0, Product Case Competition 3.0</li>
+                        </ul>
+                    </div>
+
+                    <div class="card reveal delay-1">
+                        <div class="card-icon"><i class='bx bxs-book'></i></div>
+                        <div class="card-header">
+                            <h3>Narsee Monjee Institute of Management Studies (NMIMS)</h3>
+                            <span class="card-location">Mumbai, IN</span>
+                        </div>
+                        <p class="card-subtitle">B.Tech in Computer Science</p>
+                        <ul class="card-details">
+                            <li><strong>Awards:</strong> Gold Medalist & Dean’s Merit List for Academic Performance</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="text">
-              <h3 class="heading">Web Development </h3>
-              <p>Everyday there is something new to learn in this field. I am trying to make websites in a much more
-                efficient manner than before and still learning to do so.
-              </p>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section">
+            <div class="section-container">
+                <h2 class="section-title">Projects</h2>
+                
+                <div class="card-grid">
+                    <div class="card project-card reveal">
+                        <div class="project-tags">
+                            <span class="tag">Cyber Security</span>
+                            <span class="tag">Product Strategy</span>
+                        </div>
+                        <h3>Safe Pe</h3>
+                        <p>Identified a product gap between transaction speed and security in digital payments. Devised and deployed a hybrid encryption system with AES+ECC, which enhanced data security and improved the encryption efficiency rate by 86% over RSA-based alternatives.</p>
+                    </div>
+
+                    <div class="card project-card reveal delay-1">
+                        <div class="project-tags">
+                            <span class="tag">Machine Learning</span>
+                            <span class="tag">User Experience</span>
+                        </div>
+                        <h3>AI Learn</h3>
+                        <p>Built an ML-powered personalized learning platform using an SVM classifier to process user performance data. Generated optimized learning plans that reduced course selection time by 50% and improved post-course satisfaction ratings by 30%.</p>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="service left-icon probootstrap-animate">
-            <div class="icon">
-              <!-- <i class="icon-bar-graph"></i> -->
-              <i class="icon-linegraph"></i>
-              <!-- <i class="icon-pie-chart"></i> -->
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="section alt-bg">
+            <div class="section-container">
+                <h2 class="section-title">Skills & Expertise</h2>
+                
+                <div class="skills-grid">
+                    <div class="skill-category reveal">
+                        <div class="skill-category-header">
+                            <i class='bx bx-briefcase-alt-2'></i>
+                            <h3>Product & Management</h3>
+                        </div>
+                        <div class="skill-chips">
+                            <span>Requirements Definition</span>
+                            <span>Roadmap Planning</span>
+                            <span>Stakeholder Management</span>
+                            <span>Agile / Scrum</span>
+                            <span>Release Management</span>
+                            <span>Cross-functional Delivery</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category reveal delay-1">
+                        <div class="skill-category-header">
+                            <i class='bx bx-shield-quarter'></i>
+                            <h3>Domain & Technical</h3>
+                        </div>
+                        <div class="skill-chips">
+                            <span>Cyber Security</span>
+                            <span>DevSecOps</span>
+                            <span>Kubernetes</span>
+                            <span>Docker</span>
+                            <span>AWS & OCI</span>
+                            <span>Python</span>
+                            <span>CI/CD Pipelines</span>
+                            <span>System Design</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="text">
-              <h3 class="heading">AI / Machine Learning</h3>
-              <p>I always try to find and solve existing problems by applying Machine Learning Algorithms
-                to make the human life easier.</p>
-            </div>
-          </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; <span id="current-year"></span> Yash Goyal. Built for the future.</p>
         </div>
-      </div>
-    </div>
-  </section>
-  <!-- END section -->
+    </footer>
 
-  <section id="projects" class="probootstrap-section">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12 section-heading probootstrap-animate">
-          <h2>The Projects</h2>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4 probootstrap-animate">
-          <div class="probootstrap-card">
-            <div class="probootstrap-card-media">
-              <a href=""><img src="img/safepe.gif" class="img-responsive img-border" alt="Collab"></a>
-            </div>
-            <div class="probootstrap-card-text">
-              <h2 class="probootstrap-card-heading mb0">SafePe</h2>
-              <p class="category">Django, HTML, Material UI</p>
-              <p>
-                A Restfull API of a Payment Gateway system with an hybrid Encryption and Decryption algorithm achieving 
-                a balance of speed and security, and solving the key management issue. A Simulation is also
-                implemented to show the working of the system.
-              </p>
-              <p>
-                <span class="icon"><i class="icon-global"></i>&nbsp;</span><a
-                  href="https://safepe.herokuapp.com/" target="_blank">Live Demo | <span class="icon"><i
-                      class="icon-github2"></i>&nbsp;</span><a href="https://github.com/yashgoyal2802/safe-pay"
-                    target="_blank">Source
-                    Code</a></a></p>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 probootstrap-animate">
-          <div class="probootstrap-card">
-            <div class="probootstrap-card-media">
-              <a href=""><img src="img/CCC-Web.gif" class="img-responsive img-border" alt="CCC Web"></a>
-            </div>
-            <div class="probootstrap-card-text">
-              <h2 class="probootstrap-card-heading mb0">Competitive Coding Club's Website </h2>
-              <p class="category">PHP, HTML, CSS, JavaScript, SQL</p>
-              <p>
-                The Website help's the members of CCC to keep a track of their achievements along
-                with providing them the appropriate resources for preparation and keeping them
-                updated with the dates of upcoming competitions.
-              </p>
-              <p>
-                <span class="icon"><i class="icon-global"></i>&nbsp;</span><a href="https://cccweb.herokuapp.com/"
-                  target="_blank">Live Demo | <span class="icon"><i class="icon-github2"></i>&nbsp;</span><a
-                    href="https://github.com/yashgoyal2802/CCC" target="_blank">Source
-                    Code</a></a></p>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 probootstrap-animate">
-          <div class="probootstrap-card">
-            <div class="probootstrap-card-media">
-              <a href=""><img src="img/enrollar-Web.gif" class="img-responsive img-border" alt="Enrollar"></a>
-            </div>
-            <div class="probootstrap-card-text">
-              <h2 class="probootstrap-card-heading mb0">Enrollar</h2>
-              <p class="category"> React.js, Node.js, Express, MongoDb, CSS</p>
-              <p>
-                A platform which grabs all the best courses from all different sources to one place and curates them in
-                order of customer satisfaction and reviews. So that you can do more of the learning and spend less time
-                searching for the course!
-              </p>
-              <p><i class="icon-global"></i>&nbsp;</span><a href="http://enrollar.herokuapp.com/" target="_blank">Live
-                  Demo | <span class="icon">
-                    <i class="icon-github2"></i>&nbsp;</span><a href="https://github.com/nowmozillaclub/enrollar"
-                    target="_blank">Source Code</a></a></p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 probootstrap-animate">
-          <div class="probootstrap-card">
-            <div class="probootstrap-card-media">
-              <a href=""><img src="img/NOW-ToDo-Web.gif" class="img-responsive img-border" alt="SafePe"></a>
-            </div>
-            <div class="probootstrap-card-text">
-              <h2 class="probootstrap-card-heading mb0">Collab</h2>
-              <p class="category">Node.js, React.js, HTML, Material UI</p>
-              <p>
-                A Project Collaboration Platform wherein a team can keep a track of their tasks and which person is
-                assigned to it. It also comes with a Statistics page for each Workspace, to get a graphical
-                representation of the data to help everyone understand better.
-              </p>
-              <p>
-                <span class="icon"><i class="icon-global"></i>&nbsp;</span><a
-                  href="https://now-event-project-collab.web.app/" target="_blank">Live Demo | <span class="icon"><i
-                      class="icon-github2"></i>&nbsp;</span><a href="https://github.com/nowmozillaclub/ReactBase"
-                    target="_blank">Source
-                    Code</a></a></p>
-
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-
-  <!-- <div id="skills" class="probootstrap-section">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-12 section-heading probootstrap-animate">
-          <h2>Skills</h2>
-        </div>
-      </div>
-      <div class="row" style="text-align: center;">
-        <div class="col-sm-12 probootstrap-animate">
-          <div class="row skills-graph" style="text-align: center;"></div>
-        </div>
-      </div>
-
-    </div>
-  </div> -->
-
-
-<!-- <div id="skills" class="probootstrap-section">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12 section-heading probootstrap-animate">
-        <h2>Skills</h2>
-      </div>
-    </div>
-    <div class="skills-container">
-      <ul class="cloud" role="navigation" aria-label="Webdev word cloud">
-        <li><a href="#" data-weight="9">Kubernets</a></li>
-        <li><a href="#" data-weight="4">Docker</a></li>
-        <li><a href="#" data-weight="6">Terraform</a></li>
-        <li><a href="#" data-weight="7">Spinnaker</a></li>
-        <li><a href="#" data-weight="3">Linux</a></li>
-        <li><a href="#" data-weight="2">CI/CD</a></li>
-        <li><a href="#" data-weight="6">Helm</a></li>
-        <li><a href="#" data-weight="6">Oracle Cloud</a></li>
-        <li><a href="#" data-weight="8">Artifactory</a></li>
-        <li><a href="#" data-weight="4">Jenkins</a></li>
-        <li><a href="#" data-weight="6">Git</a></li>
-        <li><a href="#" data-weight="3">SQL</a></li>
-      </ul>
-    </div>
-  </div>
-  </div> -->
-
-<div id="skills" class="probootstrap-section">
-  <div class="container">
-    <div class="row">
-        <div class="col-sm-12 section-heading probootstrap-animate">
-          <h2>Skills</h2>
-        </div>
-    </div>
-    <div class="skills-tools-list">
-      <ul>
-        <li><span>Python</span></li>
-        <li><span>Kubernetes</span></li>
-        <li><span>Nagios</span></li>
-        <li><span>Shell</span></li>
-        <li><span>Terraform</span></li>
-        <li><span>Ansible</span></li>
-        <li><span>OCI</span></li>
-        <li><span>Helm</span></li>
-        <li><span>Spinnaker</span></li>
-        <li><span>AWS</span></li>
-        <li><span>GitLab CI/CD</span></li>
-        <li><span>Docker</span></li>
-        <li><span>Jenkins</span></li>
-      </ul>
-    </div>
-  </div>
-</div>
-
-  <!-- END section -->
-
-  <!-- <div id="music" class="container">
-    <div class="probootstrap-cta probootstrap-animate">
-      <h2 class="mb20">I love producing music. </h2>
-      <p>I usually prefer producing music on FL Studio, but for audio editing, Audacity is very easy to use. I have
-        uploaded music on some streaming platforms as well. Care to listen? I am open to feedbacks :)
-      </p>
-      <p><span class="icon"><i class="icon-spotify"></i>&nbsp;</span><a
-          href="https://open.spotify.com/artist/4tQXuIKc8QPdRwjC16MrOe" target="_blank">Spotify</a> | <span
-          class="icon"><i class="icon-youtube"></i>&nbsp;</span><a
-          href="https://www.youtube.com/channel/UCvlnjn_2g6Hb6jVcCY2EOxA" target="_blank">Youtube</a></p>
-    </div>
-  </div> -->
-
-
-  <footer id="contact" class="probootstrap-footer probootstrap-bg">
-    <canvas id=q style="    top: 0;
-    position: absolute;
-    z-index: 1;
-    opacity: 0.5;"></canvas>
-
-    <div class="container">
-
-      <div class="row mb60">
-        <div class="col-md-3">
-          <div class="probootstrap-footer-widget">
-            <h4 class="heading">About Yash Goyal</h4>
-            <p style="color: white;">Hailing from Surat, Gujarat, India</p>
-            <p style="color: white;">Senior Software Engineer at Incedo.inc, Pune</p>
-            <p><a href="Yash-devOps-resume.pdf" target="_blank">Resume</a></p>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="probootstrap-footer-widget probootstrap-link-wrap">
-            <h4 class="heading">Quick Links</h4>
-            <ul class="stack-link">
-              <li><i class="icon-linkedin"></i><a href="https://www.linkedin.com/in/yash-goyal-a572a4185/"
-                  target="_blank"> Linkedin</a>
-              </li>
-              <li><i class="icon-facebook"></i><a href="https://www.facebook.com/profile.php?id=100009479367042"
-                  target="_blank">
-                  Facebook</a></li>
-              <li><i class="icon-instagram"></i><a href="https://www.instagram.com/yg.yashgoyal/" target="_blank">
-                  Instagram</a></li>
-              <li><i class="icon-twitter"></i><a href="https://twitter.com/BlackHatGhost" target="_blank"> Twitter</a>
-              </li>
-              <li><i class="icon-mail"></i><a href="mailto:yashdineshgoyal@gmail.com" target="_blank"> Mail</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-md-3">
-
-        </div>
-        <div class="col-md-3">
-          <div class="probootstrap-footer-widget probootstrap-animate">
-            <div class="probootstrap-card-media">
-              <img class="img-responsive img-border" src="img/Profetional-pic.png" alt="authors photo">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row copyright">
-        <div class="col-md-6">
-          <div class="probootstrap-footer-widget">
-            <p>&copy; 2025 Yash Goyal</p>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="probootstrap-footer-widget right">
-            <ul class="probootstrap-social">
-              <li><a href="https://github.com/yashgoyal2802" target="_blank"><i class="icon-github2"></i></a></li>
-              <li><a href="https://www.linkedin.com/in/yash-goyal-a572a4185/" target="_blank"><i
-                    class="icon-linkedin2"></i></a>
-              </li>
-              <li><a href="https://www.instagram.com/yg.yashgoyal/" target="_blank"><i class="icon-instagram2"></i></a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-
-
-
-  <div class="gototop js-top">
-    <a href="#" class="js-gotop"><i class="icon-chevron-thin-up"></i></a>
-  </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
-  <script src="js/scripts.min.js"></script>
-  <script src="js/main.min.js"></script>
-  <script src="js/custom-2.js"></script>
-
+    <script src="script.js"></script>
 </body>
-
 </html>
