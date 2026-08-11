@@ -20,6 +20,8 @@
     --text-muted: #adb5bd;
     --accent: #FF7A00; /* Vibrant Orange */
     --accent-hover: #e66e00;
+    --flare: #FF3B30; /* Threat state in the hero mesh */
+    --mesh-node: 255, 122, 0;
     --border-color: #333333;
     --shadow: 0 8px 30px rgba(0,0,0,0.4);
     --header-bg: rgba(18, 18, 18, 0.85);
@@ -34,9 +36,66 @@
     --text-muted: #6c757d;
     --accent: #E65C00; /* Deep Orange */
     --accent-hover: #cc5200;
+    --flare: #D62B20; /* Threat state in the hero mesh */
+    --mesh-node: 230, 92, 0;
     --border-color: #e9ecef;
     --shadow: 0 8px 30px rgba(0,0,0,0.08);
     --header-bg: rgba(248, 249, 250, 0.85);
+}
+
+/* ---------------------------------------------------------------
+   Theme change — the incoming palette is revealed by a circle growing
+   out of the toggle button (radius and origin are set in script.js).
+   Both snapshots are held still so the clip-path is the only motion;
+   without this the browser cross-fades them and the wipe turns to mush.
+   --------------------------------------------------------------- */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+/* Outgoing theme stays put underneath; the incoming one is clipped over it. */
+::view-transition-old(root) { z-index: 1; }
+::view-transition-new(root) { z-index: 2; }
+
+/* The toggle rides above the wipe so its icon can turn over in place
+   rather than being frozen into the snapshot with everything else. */
+#theme-toggle {
+    view-transition-name: theme-toggle;
+}
+
+::view-transition-group(theme-toggle) { z-index: 10; }
+
+::view-transition-old(theme-toggle) {
+    animation: toggle-icon-out 460ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+::view-transition-new(theme-toggle) {
+    animation: toggle-icon-in 460ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes toggle-icon-out {
+    to { transform: rotate(90deg) scale(0.3); opacity: 0; }
+}
+
+@keyframes toggle-icon-in {
+    from { transform: rotate(-90deg) scale(0.3); opacity: 0; }
+}
+
+/* Held only while a theme wipe is in flight — see script.js for why. */
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after {
+    transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-group(*),
+    ::view-transition-old(*),
+    ::view-transition-new(*) {
+        animation: none !important;
+    }
 }
 
 /* Reset & Base Styles */
@@ -58,6 +117,41 @@ body {
     line-height: 1.6;
     transition: background-color var(--transition-normal), color var(--transition-normal);
     overflow-x: hidden;
+}
+
+/* Browser surfaces themed from the palette rather than left as UA defaults. */
+::selection {
+    background-color: var(--accent);
+    color: #ffffff;
+}
+
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+* {
+    scrollbar-color: var(--border-color) transparent;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 10px;
+    border: 2px solid var(--bg-main);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--accent);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -168,14 +262,16 @@ ul {
     position: absolute;
     bottom: -5px;
     left: 0;
-    width: 0;
+    width: 100%;
     height: 2px;
     background-color: var(--accent);
-    transition: width var(--transition-fast);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-fast);
 }
 
 .nav-link:hover::after, .nav-link.active::after {
-    width: 100%;
+    transform: scaleX(1);
 }
 
 .theme-toggle {
@@ -236,6 +332,26 @@ ul {
     display: flex;
     align-items: center;
     padding-top: 80px; /* Offset for header */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Threat mesh: the hero's focal moment. Nodes, links, traversing packets and a
+   periodic flare-then-mitigate cycle, drawn by script.js. Sits behind content
+   and pauses whenever the hero scrolls out of view or the tab is hidden. */
+.threat-mesh {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+}
+
+.threat-mesh.mesh-ready {
+    opacity: 1;
 }
 
 .hero-content {
@@ -244,6 +360,13 @@ ul {
     display: flex;
     align-items: center;
     gap: 4rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Reserved during the scramble so resolving glyphs never reflow the headline. */
+[data-scramble] {
+    display: inline-block;
 }
 
 .hero-text {
@@ -299,6 +422,18 @@ ul {
 
 .hero-image {
     flex: 0 0 350px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Tilt wrapper establishes the 3D stage; the profile pic itself carries the
+   pointer-driven rotation set by script.js via --tilt-x / --tilt-y. */
+.tilt-wrap {
+    position: relative;
+    z-index: 1;
+    perspective: 800px;
 }
 
 .profile-pic {
@@ -309,12 +444,39 @@ ul {
     object-position: center 15%;
     border: 4px solid var(--border-color);
     box-shadow: var(--shadow);
-    transition: border-color var(--transition-normal), transform var(--transition-slow);
+    display: block;
+    transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1));
+    transition: border-color var(--transition-normal), transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
 }
 
 .profile-pic:hover {
     border-color: var(--accent);
-    transform: scale(1.02);
+}
+
+/* Shared tilt language echoed on cards (see .card, .timeline-content) so the
+   hero's authored moment reads as one material idea, not an isolated gimmick. */
+.tilt-target {
+    transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(var(--tilt-lift, 0));
+    transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1), border-color var(--transition-fast);
+    will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .profile-pic,
+    .tilt-target {
+        transition: border-color var(--transition-normal);
+        transform: none !important;
+    }
+    .timeline-packet {
+        display: none;
+    }
+    .timeline-trace-fill {
+        transform: scaleY(1);
+    }
+    .timeline-details li::before {
+        opacity: 1;
+    }
 }
 
 /* Experience Timeline */
@@ -330,6 +492,62 @@ ul {
     height: 100%;
     width: 2px;
     background-color: var(--border-color);
+}
+
+/* Packet trace: the spine fills and a packet rides down it as the section
+   scrolls, lighting each bullet as it passes. Scroll progress is written to
+   --trace-progress (0–1) by script.js. */
+.timeline-trace {
+    position: absolute;
+    left: 15px;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    pointer-events: none;
+}
+
+.timeline-trace-fill {
+    position: absolute;
+    inset: 0;
+    background-color: var(--accent);
+    transform: scaleY(var(--trace-progress, 0));
+    transform-origin: top;
+    will-change: transform;
+}
+
+.timeline-packet {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 8px;
+    height: 8px;
+    margin-left: -4px;
+    margin-top: -4px;
+    border-radius: 50%;
+    background-color: var(--accent);
+    box-shadow: 0 0 12px 3px var(--accent);
+    opacity: var(--trace-progress, 0);
+    transform: translateY(calc(var(--trace-progress, 0) * var(--trace-height, 0px)));
+    will-change: transform;
+}
+
+/* Bullets resolve from muted to full as the packet clears them. */
+.timeline-details li {
+    transition: color var(--transition-normal);
+}
+
+.timeline-details li::before {
+    transition: opacity var(--transition-normal), transform var(--transition-normal);
+    opacity: 0.35;
+}
+
+.timeline-details li.lit {
+    color: var(--text-main);
+}
+
+.timeline-details li.lit::before {
+    opacity: 1;
+    transform: translateX(2px);
 }
 
 .timeline-item {
@@ -360,11 +578,9 @@ ul {
     border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow);
-    transition: transform var(--transition-fast), border-color var(--transition-fast);
 }
 
 .timeline-content:hover {
-    transform: translateY(-5px);
     border-color: var(--accent);
 }
 
@@ -432,12 +648,10 @@ ul {
     border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow);
-    transition: transform var(--transition-fast), border-color var(--transition-fast);
     height: 100%;
 }
 
 .card:hover {
-    transform: translateY(-5px);
     border-color: var(--accent);
 }
 

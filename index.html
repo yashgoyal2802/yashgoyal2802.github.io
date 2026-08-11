@@ -74,9 +74,10 @@
     <main>
         <!-- Hero / Bio Section -->
         <section id="about" class="hero section">
+            <canvas id="threat-mesh" class="threat-mesh" aria-hidden="true"></canvas>
             <div class="hero-content">
                 <div class="hero-text">
-                    <h1 class="animate-up">Hi, I'm <span class="highlight">Yash Goyal</span></h1>
+                    <h1 class="animate-up">Hi, I'm <span class="highlight" data-scramble>Yash Goyal</span></h1>
                     <h2 class="animate-up delay-1">MBA Candidate @ SPJIMR | Ex-Senior DevOps Engineer</h2>
                     <h3 class="animate-up delay-2">Building toward Product Management in Cyber Security</h3>
                     <p class="animate-up delay-3">
@@ -96,7 +97,9 @@
                     </div>
                 </div>
                 <div class="hero-image animate-in-right">
-                    <img src="assets/profile-pic.png" alt="Yash Goyal" class="profile-pic">
+                    <div class="tilt-wrap" data-tilt data-tilt-max="12">
+                        <img src="assets/profile-pic.png" alt="Yash Goyal" class="profile-pic">
+                    </div>
                 </div>
             </div>
         </section>
@@ -107,9 +110,13 @@
                 <h2 class="section-title">Experience</h2>
                 
                 <div class="timeline">
+                    <div class="timeline-trace" aria-hidden="true">
+                        <div class="timeline-trace-fill"></div>
+                        <div class="timeline-packet"></div>
+                    </div>
                     <div class="timeline-item reveal">
                         <div class="timeline-dot"></div>
-                        <div class="timeline-content">
+                        <div class="timeline-content tilt-target" data-tilt data-tilt-max="4">
                             <div class="timeline-header">
                                 <div>
                                     <h3>Senior DevOps Engineer</h3>
@@ -136,7 +143,7 @@
                 <h2 class="section-title">Education</h2>
                 
                 <div class="card-grid">
-                    <div class="card reveal">
+                    <div class="card reveal tilt-target" data-tilt data-tilt-max="4">
                         <div class="card-icon"><i class='bx bxs-graduation'></i></div>
                         <div class="card-header">
                             <h3>S.P. Jain Institute of Management & Research (SPJIMR)</h3>
@@ -148,7 +155,7 @@
                         </ul>
                     </div>
 
-                    <div class="card reveal delay-1">
+                    <div class="card reveal delay-1 tilt-target" data-tilt data-tilt-max="4">
                         <div class="card-icon"><i class='bx bxs-book'></i></div>
                         <div class="card-header">
                             <h3>Narsee Monjee Institute of Management Studies (NMIMS)</h3>
@@ -169,7 +176,7 @@
                 <h2 class="section-title">Projects</h2>
                 
                 <div class="card-grid">
-                    <div class="card project-card reveal">
+                    <div class="card project-card reveal tilt-target" data-tilt data-tilt-max="4">
                         <div class="project-tags">
                             <span class="tag">Cyber Security</span>
                             <span class="tag">Product Strategy</span>
@@ -178,7 +185,7 @@
                         <p>Identified a product gap between transaction speed and security in digital payments. Devised and deployed a hybrid encryption system with AES+ECC, which enhanced data security and improved the encryption efficiency rate by 86% over RSA-based alternatives.</p>
                     </div>
 
-                    <div class="card project-card reveal delay-1">
+                    <div class="card project-card reveal delay-1 tilt-target" data-tilt data-tilt-max="4">
                         <div class="project-tags">
                             <span class="tag">Machine Learning</span>
                             <span class="tag">User Experience</span>
