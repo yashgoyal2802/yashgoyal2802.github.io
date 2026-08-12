@@ -549,16 +549,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (scrambleTarget && !reducedMotion) {
         const finalText = scrambleTarget.textContent;
         const glyphs = '!<>-_\\/[]{}—=+*^?#01';
-        const duration = 900;
-        const settleWindow = 420;
+        const duration = 1200;
+        const perChar = duration / finalText.length;
 
         // Lock the resolved width before any glyph swapping starts.
         scrambleTarget.style.minWidth = `${scrambleTarget.getBoundingClientRect().width}px`;
 
-        // Each character gets its own moment to settle, left to right.
-        const settleAt = Array.from(finalText, (_, i) =>
-            (i / finalText.length) * (duration - settleWindow) + Math.random() * settleWindow
-        );
+        // Each character locks in turn, strictly left to right.
+        const settleAt = Array.from(finalText, (_, i) => i * perChar);
 
         const startedAt = performance.now();
 
