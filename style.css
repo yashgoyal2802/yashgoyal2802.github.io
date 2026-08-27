@@ -428,12 +428,50 @@ ul {
     justify-content: center;
 }
 
-/* Tilt wrapper establishes the 3D stage; the profile pic itself carries the
-   pointer-driven rotation set by script.js via --tilt-x / --tilt-y. */
+/* Tilt wrapper is the 3D stage: it owns the pointer-driven rotation set by
+   script.js via --tilt-x / --tilt-y, and preserve-3d lets its children
+   (glow behind, photo in front, contact shadow beneath) sit at different
+   z-depths so the rotation reads as real parallax, not a flat spin. */
 .tilt-wrap {
     position: relative;
     z-index: 1;
-    perspective: 800px;
+    perspective: 1000px;
+}
+
+.tilt-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -14%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(var(--mesh-node), 0.55) 0%, rgba(var(--mesh-node), 0.18) 45%, transparent 70%);
+    filter: blur(18px);
+    transform: translateZ(-70px) scale(var(--tilt-scale, 1));
+    transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1), opacity var(--transition-normal);
+    opacity: 0.85;
+    z-index: 0;
+}
+
+.tilt-wrap::after {
+    content: '';
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    bottom: -6%;
+    height: 24px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(0,0,0,0.35) 0%, transparent 72%);
+    transform: translateZ(-90px) scale(var(--tilt-scale, 1));
+    transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 0;
+}
+
+.tilt-stage {
+    position: relative;
+    z-index: 1;
+    transform-style: preserve-3d;
+    transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1));
+    transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
 }
 
 .profile-pic {
@@ -443,14 +481,14 @@ ul {
     object-fit: cover;
     object-position: center 15%;
     border: 4px solid var(--border-color);
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow), 0 25px 45px -15px rgba(0,0,0,0.5);
     display: block;
-    transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1));
-    transition: border-color var(--transition-normal), transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateZ(40px);
+    transition: border-color var(--transition-normal);
     will-change: transform;
 }
 
-.profile-pic:hover {
+.tilt-wrap:hover .profile-pic {
     border-color: var(--accent);
 }
 
@@ -464,8 +502,13 @@ ul {
 
 @media (prefers-reduced-motion: reduce) {
     .profile-pic,
+    .tilt-stage,
     .tilt-target {
         transition: border-color var(--transition-normal);
+        transform: none !important;
+    }
+    .tilt-wrap::before,
+    .tilt-wrap::after {
         transform: none !important;
     }
     .timeline-packet {
