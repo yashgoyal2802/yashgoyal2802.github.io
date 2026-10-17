@@ -11,13 +11,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeIcon = document.getElementById('theme-icon');
     const htmlElement = document.documentElement;
 
-    // Check local storage for theme preference, default to light
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    setTheme(savedTheme);
+    // Theme: an explicit choice (the toggle) wins; otherwise follow the
+    // visitor's system setting. Only the toggle ever writes the key, so a
+    // first visit never pins the system preference. (The key is 'theme-choice'
+    // because the old 'theme' key was auto-saved on every load and would have
+    // frozen every returning visitor on dark.) The same logic runs in <head>
+    // to avoid a flash of the wrong palette.
+    const THEME_KEY = 'theme-choice';
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const readChoice = () => {
+        try { return localStorage.getItem(THEME_KEY); } catch (e) { return null; }
+    };
+    const saveChoice = (theme) => {
+        try { localStorage.setItem(THEME_KEY, theme); } catch (e) { /* storage blocked: choice lasts this visit */ }
+    };
+
+    setTheme(readChoice() || (systemDark.matches ? 'dark' : 'light'));
+
+    // Follow the OS live (e.g. scheduled dark mode) until the visitor chooses.
+    systemDark.addEventListener('change', (e) => {
+        if (!readChoice()) setTheme(e.matches ? 'dark' : 'light');
+    });
 
     themeToggleBtn.addEventListener('click', () => {
         const currentTheme = htmlElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        saveChoice(newTheme);
 
         const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -71,8 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setTheme(theme) {
         htmlElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-        
+
         // Update Icon
         if (theme === 'dark') {
             themeIcon.classList.remove('bx-moon');

@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Pick the theme before first paint (explicit choice, else the system setting); script.js keeps it in sync. -->
+    <script>
+        try {
+            var t = localStorage.getItem('theme-choice') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', t);
+        } catch (e) {}
+    </script>
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <!-- Open Graph / LinkedIn / Facebook -->
     <meta property="og:type" content="website">
