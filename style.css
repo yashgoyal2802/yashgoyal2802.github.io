@@ -1016,8 +1016,46 @@ footer p {
         flex-direction: column;
         gap: 0.5rem;
     }
-    
+
     .skills-grid {
         grid-template-columns: 1fr;
+    }
+
+    /* The desktop indent (spine gutter + card padding) leaves a ~130px text
+       column on a phone. Pull the spine to the edge and tighten the card. */
+    .timeline::before,
+    .timeline-trace {
+        left: 7px;
+    }
+
+    .timeline-item {
+        padding-left: 1.75rem;
+    }
+
+    .timeline-dot {
+        left: 0;
+    }
+
+    .timeline-content {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .card,
+    .skill-category {
+        padding: 1.5rem;
+    }
+
+    .skill-category-header {
+        margin-bottom: 1.25rem;
+    }
+
+    .skill-chips {
+        gap: 0.6rem;
+    }
+
+    .skill-chips span {
+        padding: 0.5rem 0.9rem;
     }
 }
