@@ -712,6 +712,20 @@ ul {
     width: auto;
 }
 
+/* Larger plate for the school marks at the head of the education cards. */
+.logo-row-lg {
+    margin-bottom: 1.5rem;
+}
+
+.logo-plate-lg {
+    height: 68px;
+    padding: 0 1.1rem;
+}
+
+.logo-plate-lg img {
+    height: 44px;
+}
+
 .timeline-header h3 {
     font-size: 1.3rem;
     margin-bottom: 0.2rem;
@@ -772,12 +786,6 @@ ul {
 
 .card:hover {
     border-color: var(--accent);
-}
-
-.card-icon {
-    font-size: 2.5rem;
-    color: var(--accent);
-    margin-bottom: 1.5rem;
 }
 
 .card-header {
