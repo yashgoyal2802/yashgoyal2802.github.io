@@ -591,34 +591,168 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(scrambleFrame);
     }
 
-    // Scroll Spy (Highlight active nav link)
-    const sections = document.querySelectorAll('section');
-    const navLinks = document.querySelectorAll('.nav-link');
+    // ---------------------------------------------------------------
+    // Head tracker — the portrait follows the cursor.
+    // assets/head/NN.webp are frames cut from a clip of the head sweeping
+    // through its range. POSES holds each frame's measured [yaw, pitch] in
+    // degrees (+yaw = facing the viewer's right, +pitch = looking down). The
+    // cursor is turned into a target pose, eased toward, and the frame whose
+    // measured pose is nearest is drawn — so no video plays; the cursor is the
+    // timeline.
+    // ---------------------------------------------------------------
+    const headCanvas = document.getElementById('head-tracker');
+    const headFallback = document.getElementById('portrait-fallback');
 
-    window.addEventListener('scroll', () => {
+    if (headCanvas && headCanvas.getContext) {
+        const POSES = [[-0.4,5.2],[-0.3,0.4],[-0.5,-1.5],[-0.6,-3.5],[-0.2,-5.4],[2.1,-6.5],[3.2,-7.9],[5.1,-8.2],[7.5,-9.1],[8.9,-9.9],[11.0,-9.3],[12.8,-10.9],[14.7,-11.6],[18.2,-12.1],[20.2,-12.7],[23.2,-12.1],[25.1,-11.5],[25.6,-13.7],[27.6,-10.9],[27.7,-8.4],[26.3,-9.9],[26.7,-6.3],[27.6,-4.7],[27.2,-2.2],[26.7,-0.5],[26.0,1.1],[25.2,2.7],[25.5,4.5],[25.1,6.1],[24.5,7.8],[23.3,9.0],[20.5,8.4],[19.1,10.8],[16.6,10.5],[15.3,11.9],[12.5,12.3],[9.9,12.2],[8.0,13.1],[6.6,14.1],[5.0,13.5],[2.1,13.4],[0.3,13.3],[-1.7,13.8],[-3.9,14.2],[-5.5,13.4],[-7.9,12.7],[-9.3,14.1],[-11.5,12.9],[-13.4,12.7],[-15.5,11.9],[-17.3,11.6],[-18.8,10.0],[-20.5,10.5],[-23.2,10.4],[-24.3,8.1],[-24.0,5.1],[-25.7,4.7],[-24.0,2.6],[-26.3,2.3],[-25.8,0.7],[-24.6,-1.0],[-23.4,-2.7],[-22.2,-4.9],[-20.1,-7.0],[-18.3,-7.5],[-16.5,-7.1],[-14.6,-8.1],[-11.7,-7.2],[-11.8,-5.6],[-9.9,-4.4],[-8.3,-2.3],[-5.7,-1.4],[-4.6,0.0],[-3.1,0.9],[-1.5,2.0],[0.1,2.3],[0.8,4.1]];
+        const NEUTRAL = 75; // straight-on frame
+        const MAX_YAW = 27;
+        const MAX_PITCH = 13;
+        // Cursor distance (as a fraction of the viewport) that reaches full turn.
+        const REACH = 0.45;
+        const EASE = 0.14;
+
+        const hctx = headCanvas.getContext('2d');
+        const frames = new Array(POSES.length);
+        let loaded = 0;
+        let ready = false;
+        let shown = -1;
+
+        const current = { yaw: POSES[NEUTRAL][0], pitch: POSES[NEUTRAL][1] };
+        const target = { yaw: current.yaw, pitch: current.pitch };
+        let headRaf = null;
+        let headVisible = true;
+        const nearestFrame = (yaw, pitch) => {
+            let best = NEUTRAL;
+            let bestDist = Infinity;
+            for (let i = 0; i < POSES.length; i++) {
+                const d = (POSES[i][0] - yaw) ** 2 + (POSES[i][1] - pitch) ** 2;
+                if (d < bestDist) { bestDist = d; best = i; }
+            }
+            return best;
+        };
+
+        const paint = (index) => {
+            if (index === shown || !frames[index]) return;
+            shown = index;
+            hctx.drawImage(frames[index], 0, 0, headCanvas.width, headCanvas.height);
+        };
+
+        const headTick = () => {
+            current.yaw += (target.yaw - current.yaw) * EASE;
+            current.pitch += (target.pitch - current.pitch) * EASE;
+            paint(nearestFrame(current.yaw, current.pitch));
+
+            const settled = Math.abs(target.yaw - current.yaw) < 0.05 &&
+                            Math.abs(target.pitch - current.pitch) < 0.05;
+            headRaf = settled ? null : requestAnimationFrame(headTick);
+        };
+
+        const wake = () => {
+            if (headRaf === null && ready && headVisible) headRaf = requestAnimationFrame(headTick);
+        };
+
+        const lookAt = (clientX, clientY) => {
+            const rect = headCanvas.getBoundingClientRect();
+            const dx = (clientX - (rect.left + rect.width / 2)) / (window.innerWidth * REACH);
+            const dy = (clientY - (rect.top + rect.height / 2)) / (window.innerHeight * REACH);
+            target.yaw = Math.max(-1, Math.min(1, dx)) * MAX_YAW;
+            target.pitch = Math.max(-1, Math.min(1, dy)) * MAX_PITCH;
+            wake();
+        };
+
+        const lookAhead = () => {
+            target.yaw = POSES[NEUTRAL][0];
+            target.pitch = POSES[NEUTRAL][1];
+            wake();
+        };
+
+        const onReady = () => {
+            ready = true;
+            paint(NEUTRAL);
+            headCanvas.classList.add('is-ready');
+            // Hide the static photo only once the canvas has faded in over it.
+            setTimeout(() => headFallback && headFallback.classList.add('is-hidden'), 550);
+
+            if (reducedMotion) return;
+
+            window.addEventListener('pointermove', (e) => lookAt(e.clientX, e.clientY), { passive: true });
+            window.addEventListener('pointerup', (e) => { if (e.pointerType !== 'mouse') lookAhead(); });
+            window.addEventListener('pointercancel', lookAhead);
+            document.documentElement.addEventListener('pointerleave', lookAhead);
+
+            // No point easing frames while the hero is off screen.
+            new IntersectionObserver((entries) => {
+                headVisible = entries[entries.length - 1].isIntersecting;
+                if (headVisible) wake();
+            }).observe(headCanvas);
+        };
+
+        POSES.forEach((_, i) => {
+            const img = new Image();
+            img.decoding = 'async';
+            img.onload = img.onerror = () => {
+                if (++loaded === POSES.length) onReady();
+            };
+            img.src = `assets/head/${String(i).padStart(2, '0')}.webp`;
+            frames[i] = img;
+        });
+    }
+
+    // Mobile menu
+    const navToggle = document.getElementById('nav-toggle');
+    const navToggleIcon = document.getElementById('nav-toggle-icon');
+    const navMenu = document.getElementById('nav-links');
+
+    const setMenu = (open) => {
+        navMenu.classList.toggle('open', open);
+        navToggle.setAttribute('aria-expanded', String(open));
+        navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+        navToggleIcon.classList.toggle('bx-menu', !open);
+        navToggleIcon.classList.toggle('bx-x', open);
+    };
+
+    navToggle.addEventListener('click', () => {
+        setMenu(!navMenu.classList.contains('open'));
+    });
+
+    navMenu.addEventListener('click', (e) => {
+        if (e.target.closest('.nav-link')) setMenu(false);
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') setMenu(false);
+    });
+
+    // Scroll Spy (Highlight active nav link)
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const header = document.querySelector('.header');
+    let spyTicking = false;
+
+    const updateSpy = () => {
         let current = '';
-        
+
         sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            if (scrollY >= (sectionTop - 150)) {
-                current = section.getAttribute('id');
+            if (window.scrollY >= section.offsetTop - 150) {
+                current = section.id;
             }
         });
 
         navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href').includes(current)) {
-                link.classList.add('active');
-            }
+            link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
         });
-        
+
         // Add subtle shadow to header on scroll
-        const header = document.querySelector('.header');
-        if (window.scrollY > 50) {
-            header.style.boxShadow = 'var(--shadow)';
-        } else {
-            header.style.boxShadow = 'none';
+        header.style.boxShadow = window.scrollY > 50 ? 'var(--shadow)' : 'none';
+
+        spyTicking = false;
+    };
+
+    window.addEventListener('scroll', () => {
+        if (!spyTicking) {
+            requestAnimationFrame(updateSpy);
+            spyTicking = true;
         }
-    });
+    }, { passive: true });
 });

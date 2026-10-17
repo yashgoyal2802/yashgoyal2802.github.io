@@ -274,6 +274,29 @@ ul {
     transform: scaleX(1);
 }
 
+.nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Only shown under 768px, where the inline links are replaced by a dropdown. */
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-main);
+    font-size: 1.6rem;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-fast);
+}
+
+.nav-toggle:hover {
+    color: var(--accent);
+}
+
 .theme-toggle {
     background: none;
     border: none;
@@ -465,7 +488,10 @@ ul {
     z-index: 0;
 }
 
+/* Fallback photo and head-tracker canvas share one grid cell so the swap
+   between them is invisible and nothing shifts when the frames arrive. */
 .tilt-stage {
+    display: grid;
     position: relative;
     z-index: 1;
     transform-style: preserve-3d;
@@ -490,6 +516,26 @@ ul {
 
 .tilt-wrap:hover .profile-pic {
     border-color: var(--accent);
+}
+
+.tilt-stage > .profile-pic {
+    grid-area: 1 / 1;
+}
+
+/* Head tracker: drawn by script.js from pre-cut video frames. Invisible until
+   every frame has loaded, then it takes over from the static photo. */
+.head-tracker {
+    background-color: #ffffff; /* frames are shot on white */
+    opacity: 0;
+    transition: opacity 0.5s ease, border-color var(--transition-normal);
+}
+
+.head-tracker.is-ready {
+    opacity: 1;
+}
+
+#portrait-fallback.is-hidden {
+    visibility: hidden;
 }
 
 /* Shared tilt language echoed on cards (see .card, .timeline-content) so the
@@ -651,7 +697,7 @@ ul {
     font-size: 0.9rem;
     color: var(--accent);
     font-weight: 600;
-    background-color: rgba(255, 122, 0, 0.1);
+    background-color: rgba(var(--mesh-node), 0.1);
     padding: 0.3rem 0.8rem;
     border-radius: 20px;
 }
@@ -681,7 +727,7 @@ ul {
 /* Cards (Education & Projects) */
 .card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
     gap: 2rem;
 }
 
@@ -756,7 +802,7 @@ ul {
     font-size: 0.75rem;
     font-weight: 600;
     color: var(--accent);
-    background-color: rgba(255, 122, 0, 0.1);
+    background-color: rgba(var(--mesh-node), 0.1);
     padding: 0.3rem 0.8rem;
     border-radius: 20px;
 }
@@ -774,7 +820,7 @@ ul {
 /* Skills Grid */
 .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
     gap: 2rem;
 }
 
@@ -927,8 +973,39 @@ footer p {
 }
 
 @media (max-width: 768px) {
+    .nav-toggle {
+        display: flex;
+    }
+
     .nav-links {
-        display: none; /* In a real app, implement a hamburger menu here */
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        padding: 0.5rem 1rem 1rem;
+        background-color: var(--bg-main);
+        border-bottom: 1px solid var(--border-color);
+        box-shadow: var(--shadow);
+    }
+
+    .nav-links.open {
+        display: flex;
+    }
+
+    .nav-link {
+        padding: 0.8rem 0.5rem;
+        font-size: 1.05rem;
+    }
+
+    .nav-link::after {
+        display: none;
+    }
+
+    .nav-link.active {
+        color: var(--accent);
     }
     
     .section {

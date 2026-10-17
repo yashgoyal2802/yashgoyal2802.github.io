@@ -56,7 +56,7 @@
     <header class="header">
         <div class="nav-container">
             <a href="#" class="logo">YG</a>
-            <nav class="nav-links">
+            <nav class="nav-links" id="nav-links">
                 <a href="#about" class="nav-link active">About</a>
                 <a href="#experience" class="nav-link">Experience</a>
                 <a href="#education" class="nav-link">Education</a>
@@ -66,6 +66,9 @@
             <div class="nav-controls">
                 <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark/Light Mode">
                     <i class='bx bx-sun' id="theme-icon"></i>
+                </button>
+                <button id="nav-toggle" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+                    <i class='bx bx-menu' id="nav-toggle-icon"></i>
                 </button>
             </div>
         </div>
@@ -93,13 +96,14 @@
                     </div>
                     <div class="social-links animate-up delay-5">
                         <a href="https://linkedin.com/in/yashgoyal2802" target="_blank" aria-label="LinkedIn"><i class='bx bxl-linkedin-square'></i></a>
-                        <a href="https://yashgoyal2802.github.io" target="_blank" aria-label="GitHub"><i class='bx bxl-github'></i></a>
+                        <a href="https://github.com/yashgoyal2802" target="_blank" rel="noopener" aria-label="GitHub"><i class='bx bxl-github'></i></a>
                     </div>
                 </div>
                 <div class="hero-image animate-in-right">
-                    <div class="tilt-wrap" data-tilt data-tilt-max="12">
+                    <div class="tilt-wrap">
                         <div class="tilt-stage">
-                            <img src="assets/profile-pic.png" alt="Yash Goyal" class="profile-pic">
+                            <img src="assets/profile-pic.png" alt="Yash Goyal" class="profile-pic" id="portrait-fallback">
+                            <canvas id="head-tracker" class="profile-pic head-tracker" width="480" height="480" role="img" aria-label="Yash Goyal. His head follows your cursor."></canvas>
                         </div>
                     </div>
                 </div>
