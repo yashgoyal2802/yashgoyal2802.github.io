@@ -615,43 +615,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ---------------------------------------------------------------
     // Head tracker — the portrait follows the cursor.
-    // assets/head/NN.webp are frames cut from a clip of the head sweeping
-    // through its range. POSES holds each frame's measured [yaw, pitch] in
-    // degrees (+yaw = facing the viewer's right, +pitch = looking down). The
-    // cursor is turned into a target pose, eased toward, and the frame whose
-    // measured pose is nearest is drawn — so no video plays; the cursor is the
-    // timeline.
+    // assets/head/NNN.webp are every frame of a clip in which the head travels
+    // one full loop: neutral, round the compass (up → right → down → left →
+    // up-left), then back to neutral. Frame index is therefore a position on a
+    // ring, and angle around the portrait maps onto it (ANGLES, one entry per
+    // 5° starting at 0° = cursor to the right, clockwise on screen).
+    //
+    // The head never jumps to a frame: it glides along the ring one consecutive
+    // frame at a time, speed-limited so no frames are skipped in bulk. Exactly
+    // one frame is drawn per tick, fully opaque — never blended.
     // ---------------------------------------------------------------
     const headCanvas = document.getElementById('head-tracker');
     const headFallback = document.getElementById('portrait-fallback');
 
     if (headCanvas && headCanvas.getContext) {
-        const POSES = [[-0.4,5.2],[-0.3,0.4],[-0.5,-1.5],[-0.6,-3.5],[-0.2,-5.4],[2.1,-6.5],[3.2,-7.9],[5.1,-8.2],[7.5,-9.1],[8.9,-9.9],[11.0,-9.3],[12.8,-10.9],[14.7,-11.6],[18.2,-12.1],[20.2,-12.7],[23.2,-12.1],[25.1,-11.5],[25.6,-13.7],[27.6,-10.9],[27.7,-8.4],[26.3,-9.9],[26.7,-6.3],[27.6,-4.7],[27.2,-2.2],[26.7,-0.5],[26.0,1.1],[25.2,2.7],[25.5,4.5],[25.1,6.1],[24.5,7.8],[23.3,9.0],[20.5,8.4],[19.1,10.8],[16.6,10.5],[15.3,11.9],[12.5,12.3],[9.9,12.2],[8.0,13.1],[6.6,14.1],[5.0,13.5],[2.1,13.4],[0.3,13.3],[-1.7,13.8],[-3.9,14.2],[-5.5,13.4],[-7.9,12.7],[-9.3,14.1],[-11.5,12.9],[-13.4,12.7],[-15.5,11.9],[-17.3,11.6],[-18.8,10.0],[-20.5,10.5],[-23.2,10.4],[-24.3,8.1],[-24.0,5.1],[-25.7,4.7],[-24.0,2.6],[-26.3,2.3],[-25.8,0.7],[-24.6,-1.0],[-23.4,-2.7],[-22.2,-4.9],[-20.1,-7.0],[-18.3,-7.5],[-16.5,-7.1],[-14.6,-8.1],[-11.7,-7.2],[-11.8,-5.6],[-9.9,-4.4],[-8.3,-2.3],[-5.7,-1.4],[-4.6,0.0],[-3.1,0.9],[-1.5,2.0],[0.1,2.3],[0.8,4.1]];
-        const NEUTRAL = 75; // straight-on frame
-        const MAX_YAW = 27;
-        const MAX_PITCH = 13;
-        // Cursor distance (as a fraction of the viewport) that reaches full turn.
-        const REACH = 0.45;
-        const EASE = 0.14;
+        const FRAME_COUNT = 212;
+        const CENTER = 210; // straight-on, eyes to camera; also the ring's seam
+        const ANGLES = [79,80,81,84,85,86,88,90,93,94,95,95,96,98,100,102,105,107,110,114,116,119,120,123,125,128,134,137,139,141,144,145,148,149,155,159,160,163,165,167,168,168,169,171,174,175,182,194,192,192,192,20,20,20,24,26,27,30,34,39,45,47,49,58,62,72,73,74,75,76,77,78];
+        // Cursor inside this radius (fraction of viewport width) = eye contact.
+        const DEADZONE = 0.12;
+        // Frames advanced per 60fps tick: easing factor, and a ceiling so a
+        // flick across the page plays the in-between frames instead of skipping.
+        const EASE = 0.16;
+        const MAX_STEP = 2.4;
 
         const hctx = headCanvas.getContext('2d');
-        const frames = new Array(POSES.length);
+        const frames = new Array(FRAME_COUNT);
         let loaded = 0;
         let ready = false;
         let shown = -1;
 
-        const current = { yaw: POSES[NEUTRAL][0], pitch: POSES[NEUTRAL][1] };
-        const target = { yaw: current.yaw, pitch: current.pitch };
+        let pos = CENTER;       // fractional position on the ring
+        let targetPos = CENTER;
         let headRaf = null;
+        let headLast = 0;
         let headVisible = true;
-        const nearestFrame = (yaw, pitch) => {
-            let best = NEUTRAL;
-            let bestDist = Infinity;
-            for (let i = 0; i < POSES.length; i++) {
-                const d = (POSES[i][0] - yaw) ** 2 + (POSES[i][1] - pitch) ** 2;
-                if (d < bestDist) { bestDist = d; best = i; }
-            }
-            return best;
+
+        // Signed shortest distance from a to b on the ring.
+        const ringDelta = (a, b) => {
+            let d = (b - a) % FRAME_COUNT;
+            if (d > FRAME_COUNT / 2) d -= FRAME_COUNT;
+            if (d < -FRAME_COUNT / 2) d += FRAME_COUNT;
+            return d;
+        };
+
+        const indexForAngle = (deg) => {
+            const slot = (((deg % 360) + 360) % 360) / 5;
+            const k = Math.floor(slot);
+            const a = ANGLES[k];
+            const b = ANGLES[(k + 1) % ANGLES.length];
+            // The two ends of the clip's compass don't meet (up-left to up runs
+            // through neutral); never interpolate across that gap.
+            if (Math.abs(b - a) > 12) return slot - k < 0.5 ? a : b;
+            return a + (b - a) * (slot - k);
         };
 
         const paint = (index) => {
@@ -660,38 +676,52 @@ document.addEventListener('DOMContentLoaded', () => {
             hctx.drawImage(frames[index], 0, 0, headCanvas.width, headCanvas.height);
         };
 
-        const headTick = () => {
-            current.yaw += (target.yaw - current.yaw) * EASE;
-            current.pitch += (target.pitch - current.pitch) * EASE;
-            paint(nearestFrame(current.yaw, current.pitch));
+        const headTick = (now) => {
+            const delta = Math.min((now - headLast) / 16.67, 3);
+            headLast = now;
 
-            const settled = Math.abs(target.yaw - current.yaw) < 0.05 &&
-                            Math.abs(target.pitch - current.pitch) < 0.05;
-            headRaf = settled ? null : requestAnimationFrame(headTick);
+            const d = ringDelta(pos, targetPos);
+            const limit = MAX_STEP * delta;
+            const step = Math.max(-limit, Math.min(limit, d * Math.min(EASE * delta, 1)));
+            pos = (pos + step + FRAME_COUNT) % FRAME_COUNT;
+            paint(Math.round(pos) % FRAME_COUNT);
+
+            if (Math.abs(d) < 0.05) {
+                pos = targetPos;
+                paint(Math.round(pos) % FRAME_COUNT);
+                headRaf = null;
+            } else {
+                headRaf = requestAnimationFrame(headTick);
+            }
         };
 
         const wake = () => {
-            if (headRaf === null && ready && headVisible) headRaf = requestAnimationFrame(headTick);
+            if (headRaf === null && ready && headVisible) {
+                headLast = performance.now();
+                headRaf = requestAnimationFrame(headTick);
+            }
         };
 
         const lookAt = (clientX, clientY) => {
             const rect = headCanvas.getBoundingClientRect();
-            const dx = (clientX - (rect.left + rect.width / 2)) / (window.innerWidth * REACH);
-            const dy = (clientY - (rect.top + rect.height / 2)) / (window.innerHeight * REACH);
-            target.yaw = Math.max(-1, Math.min(1, dx)) * MAX_YAW;
-            target.pitch = Math.max(-1, Math.min(1, dy)) * MAX_PITCH;
+            const dx = clientX - (rect.left + rect.width / 2);
+            const dy = clientY - (rect.top + rect.height / 2);
+            const dead = Math.max(window.innerWidth * DEADZONE, rect.width * 0.6);
+
+            targetPos = Math.hypot(dx, dy) < dead
+                ? CENTER
+                : indexForAngle(Math.atan2(dy, dx) * 180 / Math.PI);
             wake();
         };
 
         const lookAhead = () => {
-            target.yaw = POSES[NEUTRAL][0];
-            target.pitch = POSES[NEUTRAL][1];
+            targetPos = CENTER;
             wake();
         };
 
         const onReady = () => {
             ready = true;
-            paint(NEUTRAL);
+            paint(CENTER);
             headCanvas.classList.add('is-ready');
             // Hide the static photo only once the canvas has faded in over it.
             setTimeout(() => headFallback && headFallback.classList.add('is-hidden'), 550);
@@ -710,15 +740,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }).observe(headCanvas);
         };
 
-        POSES.forEach((_, i) => {
+        for (let i = 0; i < FRAME_COUNT; i++) {
             const img = new Image();
             img.decoding = 'async';
             img.onload = img.onerror = () => {
-                if (++loaded === POSES.length) onReady();
+                if (++loaded === FRAME_COUNT) onReady();
             };
-            img.src = `assets/head/${String(i).padStart(2, '0')}.webp`;
+            img.src = `assets/head/${String(i).padStart(3, '0')}.webp`;
             frames[i] = img;
-        });
+        }
     }
 
     // Mobile menu
