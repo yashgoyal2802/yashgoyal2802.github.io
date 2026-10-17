@@ -11,13 +11,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeIcon = document.getElementById('theme-icon');
     const htmlElement = document.documentElement;
 
-    // Check local storage for theme preference, default to dark
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    setTheme(savedTheme);
+    // Theme: an explicit choice (the toggle) wins; otherwise follow the
+    // visitor's system setting. Only the toggle ever writes the key, so a
+    // first visit never pins the system preference. (The key is 'theme-choice'
+    // because the old 'theme' key was auto-saved on every load and would have
+    // frozen every returning visitor on dark.) The same logic runs in <head>
+    // to avoid a flash of the wrong palette.
+    const THEME_KEY = 'theme-choice';
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const readChoice = () => {
+        try { return localStorage.getItem(THEME_KEY); } catch (e) { return null; }
+    };
+    const saveChoice = (theme) => {
+        try { localStorage.setItem(THEME_KEY, theme); } catch (e) { /* storage blocked: choice lasts this visit */ }
+    };
+
+    setTheme(readChoice() || (systemDark.matches ? 'dark' : 'light'));
+
+    // Follow the OS live (e.g. scheduled dark mode) until the visitor chooses.
+    systemDark.addEventListener('change', (e) => {
+        if (!readChoice()) setTheme(e.matches ? 'dark' : 'light');
+    });
 
     themeToggleBtn.addEventListener('click', () => {
         const currentTheme = htmlElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        saveChoice(newTheme);
 
         const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -71,8 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setTheme(theme) {
         htmlElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-        
+
         // Update Icon
         if (theme === 'dark') {
             themeIcon.classList.remove('bx-moon');
@@ -552,13 +571,34 @@ document.addEventListener('DOMContentLoaded', () => {
         const duration = 1200;
         const perChar = duration / finalText.length;
 
-        // Lock the resolved width before any glyph swapping starts.
-        scrambleTarget.style.minWidth = `${scrambleTarget.getBoundingClientRect().width}px`;
-
         // Each character locks in turn, strictly left to right.
         const settleAt = Array.from(finalText, (_, i) => i * perChar);
 
-        const startedAt = performance.now();
+        // Rests 3–4s between runs, measured from the moment a run resolves.
+        const REPLAY_MIN = 3000;
+        const REPLAY_JITTER = 1000;
+
+        const scheduleReplay = () => {
+            setTimeout(() => {
+                // Nothing to see off screen or in a background tab; check again later.
+                const rect = scrambleTarget.getBoundingClientRect();
+                const onScreen = rect.bottom > 0 && rect.top < window.innerHeight;
+                if (document.hidden || !onScreen) {
+                    scheduleReplay();
+                    return;
+                }
+                runScramble();
+            }, REPLAY_MIN + Math.random() * REPLAY_JITTER);
+        };
+
+        let startedAt = 0;
+
+        const runScramble = () => {
+            // Lock the resolved width before any glyph swapping starts.
+            scrambleTarget.style.minWidth = `${scrambleTarget.getBoundingClientRect().width}px`;
+            startedAt = performance.now();
+            requestAnimationFrame(scrambleFrame);
+        };
 
         const scrambleFrame = (now) => {
             const elapsed = now - startedAt;
@@ -583,42 +623,247 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (done) {
                 scrambleTarget.style.minWidth = '';
+                scheduleReplay();
                 return;
             }
             requestAnimationFrame(scrambleFrame);
         };
 
-        requestAnimationFrame(scrambleFrame);
+        runScramble();
     }
 
-    // Scroll Spy (Highlight active nav link)
-    const sections = document.querySelectorAll('section');
-    const navLinks = document.querySelectorAll('.nav-link');
+    // ---------------------------------------------------------------
+    // Head tracker — the portrait follows the cursor.
+    // assets/head/NNN.webp are every frame of a clip in which the head travels
+    // one full loop: neutral, round the compass (up → right → down → left →
+    // up-left), then back to neutral. Frame index is therefore a position on a
+    // ring, and angle around the portrait maps onto it (ANGLES, one entry per
+    // 5° starting at 0° = cursor to the right, clockwise on screen).
+    //
+    // The head never jumps to a frame: it glides along the ring one consecutive
+    // frame at a time, speed-limited so no frames are skipped in bulk. Exactly
+    // one frame is drawn per tick, fully opaque — never blended.
+    // ---------------------------------------------------------------
+    const headCanvas = document.getElementById('head-tracker');
+    const headFallback = document.getElementById('portrait-fallback');
 
-    window.addEventListener('scroll', () => {
+    if (headCanvas && headCanvas.getContext) {
+        const FRAME_COUNT = 212;
+        const CENTER = 210; // straight-on, eyes to camera; also the ring's seam
+        const ANGLES = [79,80,81,84,85,86,88,90,93,94,95,95,96,98,100,102,105,107,110,114,116,119,120,123,125,128,134,137,139,141,144,145,148,149,155,159,160,163,165,167,168,168,169,171,174,175,182,194,192,192,192,20,20,20,24,26,27,30,34,39,45,47,49,58,62,72,73,74,75,76,77,78];
+        // Cursor inside this radius (fraction of viewport width) = eye contact.
+        const DEADZONE = 0.12;
+        // Frames advanced per 60fps tick: easing factor, and a ceiling so a
+        // flick across the page plays the in-between frames instead of skipping.
+        const EASE = 0.16;
+        const MAX_STEP = 2.4;
+
+        const hctx = headCanvas.getContext('2d');
+        const frames = new Array(FRAME_COUNT);
+        const isLoaded = new Array(FRAME_COUNT).fill(false);
+        let ready = false;
+        let shown = -1;
+
+        let pos = CENTER;       // fractional position on the ring
+        let targetPos = CENTER;
+        let headRaf = null;
+        let headLast = 0;
+        let headVisible = true;
+
+        // Signed shortest distance from a to b on the ring.
+        const ringDelta = (a, b) => {
+            let d = (b - a) % FRAME_COUNT;
+            if (d > FRAME_COUNT / 2) d -= FRAME_COUNT;
+            if (d < -FRAME_COUNT / 2) d += FRAME_COUNT;
+            return d;
+        };
+
+        const indexForAngle = (deg) => {
+            const slot = (((deg % 360) + 360) % 360) / 5;
+            const k = Math.floor(slot);
+            const a = ANGLES[k];
+            const b = ANGLES[(k + 1) % ANGLES.length];
+            // The two ends of the clip's compass don't meet (up-left to up runs
+            // through neutral); never interpolate across that gap.
+            if (Math.abs(b - a) > 12) return slot - k < 0.5 ? a : b;
+            return a + (b - a) * (slot - k);
+        };
+
+        // While frames are still arriving, draw the nearest one that has.
+        const nearestLoaded = (index) => {
+            if (isLoaded[index]) return index;
+            for (let d = 1; d <= FRAME_COUNT / 2; d++) {
+                const before = (index - d + FRAME_COUNT) % FRAME_COUNT;
+                const after = (index + d) % FRAME_COUNT;
+                if (isLoaded[before]) return before;
+                if (isLoaded[after]) return after;
+            }
+            return -1;
+        };
+
+        const paint = (index) => {
+            const frame = nearestLoaded(index);
+            if (frame < 0 || frame === shown) return;
+            shown = frame;
+            hctx.drawImage(frames[frame], 0, 0, headCanvas.width, headCanvas.height);
+        };
+
+        const headTick = (now) => {
+            const delta = Math.min((now - headLast) / 16.67, 3);
+            headLast = now;
+
+            const d = ringDelta(pos, targetPos);
+            const limit = MAX_STEP * delta;
+            const step = Math.max(-limit, Math.min(limit, d * Math.min(EASE * delta, 1)));
+            pos = (pos + step + FRAME_COUNT) % FRAME_COUNT;
+            paint(Math.round(pos) % FRAME_COUNT);
+
+            if (Math.abs(d) < 0.05) {
+                pos = targetPos;
+                paint(Math.round(pos) % FRAME_COUNT);
+                headRaf = null;
+            } else {
+                headRaf = requestAnimationFrame(headTick);
+            }
+        };
+
+        const wake = () => {
+            if (headRaf === null && ready && headVisible) {
+                headLast = performance.now();
+                headRaf = requestAnimationFrame(headTick);
+            }
+        };
+
+        const lookAt = (clientX, clientY) => {
+            const rect = headCanvas.getBoundingClientRect();
+            const dx = clientX - (rect.left + rect.width / 2);
+            const dy = clientY - (rect.top + rect.height / 2);
+            const dead = Math.max(window.innerWidth * DEADZONE, rect.width * 0.6);
+
+            targetPos = Math.hypot(dx, dy) < dead
+                ? CENTER
+                : indexForAngle(Math.atan2(dy, dx) * 180 / Math.PI);
+            wake();
+        };
+
+        const lookAhead = () => {
+            targetPos = CENTER;
+            wake();
+        };
+
+        const onReady = () => {
+            ready = true;
+            paint(CENTER);
+            headCanvas.classList.add('is-ready');
+            // Hide the static photo only once the canvas has faded in over it.
+            // (It is the same straight-on frame, so the handover is invisible.)
+            setTimeout(() => headFallback && headFallback.classList.add('is-hidden'), 550);
+
+            if (reducedMotion) return;
+
+            window.addEventListener('pointermove', (e) => lookAt(e.clientX, e.clientY), { passive: true });
+            window.addEventListener('pointerup', (e) => { if (e.pointerType !== 'mouse') lookAhead(); });
+            window.addEventListener('pointercancel', lookAhead);
+            document.documentElement.addEventListener('pointerleave', lookAhead);
+
+            // No point easing frames while the hero is off screen.
+            new IntersectionObserver((entries) => {
+                headVisible = entries[entries.length - 1].isIntersecting;
+                if (headVisible) wake();
+            }).observe(headCanvas);
+        };
+
+        // Load order: the straight-on frame first (the page is interactive as
+        // soon as it lands), then evenly spaced frames at ever finer strides, so
+        // tracking is usable almost immediately and sharpens as the rest arrive.
+        const loadOrder = [CENTER];
+        const queued = new Set(loadOrder);
+        for (const stride of [32, 16, 8, 4, 2, 1]) {
+            for (let i = 0; i < FRAME_COUNT; i += stride) {
+                if (!queued.has(i)) { queued.add(i); loadOrder.push(i); }
+            }
+        }
+
+        const loadFrame = (i) => new Promise((resolve) => {
+            const img = new Image();
+            img.decoding = 'async';
+            if (i !== CENTER) img.fetchPriority = 'low';
+            img.onload = () => {
+                frames[i] = img;
+                isLoaded[i] = true;
+                if (i === CENTER) onReady();
+                else if (ready) paint(Math.round(pos) % FRAME_COUNT);
+                resolve();
+            };
+            img.onerror = resolve;
+            img.src = `assets/head/${String(i).padStart(3, '0')}.webp`;
+        });
+
+        // A handful in flight at once: fast, but never crowding out the page's
+        // own CSS, fonts and icons.
+        loadFrame(CENTER).then(() => {
+            let next = 1;
+            const worker = async () => {
+                while (next < loadOrder.length) await loadFrame(loadOrder[next++]);
+            };
+            for (let w = 0; w < 4; w++) worker();
+        });
+    }
+
+    // Mobile menu
+    const navToggle = document.getElementById('nav-toggle');
+    const navToggleIcon = document.getElementById('nav-toggle-icon');
+    const navMenu = document.getElementById('nav-links');
+
+    const setMenu = (open) => {
+        navMenu.classList.toggle('open', open);
+        navToggle.setAttribute('aria-expanded', String(open));
+        navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+        navToggleIcon.classList.toggle('bx-menu', !open);
+        navToggleIcon.classList.toggle('bx-x', open);
+    };
+
+    navToggle.addEventListener('click', () => {
+        setMenu(!navMenu.classList.contains('open'));
+    });
+
+    navMenu.addEventListener('click', (e) => {
+        if (e.target.closest('.nav-link')) setMenu(false);
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') setMenu(false);
+    });
+
+    // Scroll Spy (Highlight active nav link)
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const header = document.querySelector('.header');
+    let spyTicking = false;
+
+    const updateSpy = () => {
         let current = '';
-        
+
         sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            if (scrollY >= (sectionTop - 150)) {
-                current = section.getAttribute('id');
+            if (window.scrollY >= section.offsetTop - 150) {
+                current = section.id;
             }
         });
 
         navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href').includes(current)) {
-                link.classList.add('active');
-            }
+            link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
         });
-        
+
         // Add subtle shadow to header on scroll
-        const header = document.querySelector('.header');
-        if (window.scrollY > 50) {
-            header.style.boxShadow = 'var(--shadow)';
-        } else {
-            header.style.boxShadow = 'none';
+        header.style.boxShadow = window.scrollY > 50 ? 'var(--shadow)' : 'none';
+
+        spyTicking = false;
+    };
+
+    window.addEventListener('scroll', () => {
+        if (!spyTicking) {
+            requestAnimationFrame(updateSpy);
+            spyTicking = true;
         }
-    });
+    }, { passive: true });
 });

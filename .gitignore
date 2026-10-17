@@ -1,0 +1,5 @@
+# Source clips used to cut the portrait frames; the site only needs assets/head/*.webp
+assets/*.mp4
+
+# Design-hook runtime cache
+.impeccable/hook.cache.json

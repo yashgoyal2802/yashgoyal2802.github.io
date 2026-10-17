@@ -11,7 +11,7 @@
     --section-padding: 5rem 1.5rem;
 }
 
-/* Dark Mode (Default) */
+/* Dark Mode (opt-in via the toggle; light is the default) */
 [data-theme="dark"] {
     --bg-main: #121212;
     --bg-alt: #1a1a1a;
@@ -22,6 +22,14 @@
     --accent-hover: #e66e00;
     --flare: #FF3B30; /* Threat state in the hero mesh */
     --mesh-node: 255, 122, 0;
+    --logo-bg: #d6b9fa; /* SoHired mark, dark theme */
+    --logo-fg: #3a1a5c;
+    --plate-bg: #ece7e0; /* soft warm off-white: pure white glares on dark cards */
+    --plate-border: rgba(255, 255, 255, 0.08);
+    --plate-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+    --plate-pad-x: 0.85rem;
+    --strip-filter: brightness(0) invert(1);
+    --strip-opacity: 0.55;
     --border-color: #333333;
     --shadow: 0 8px 30px rgba(0,0,0,0.4);
     --header-bg: rgba(18, 18, 18, 0.85);
@@ -38,6 +46,14 @@
     --accent-hover: #cc5200;
     --flare: #D62B20; /* Threat state in the hero mesh */
     --mesh-node: 230, 92, 0;
+    --logo-bg: #350859; /* SoHired mark, light theme */
+    --logo-fg: #ffffff;
+    --plate-bg: transparent; /* logos sit straight on the white card */
+    --plate-border: transparent;
+    --plate-shadow: none;
+    --plate-pad-x: 0;
+    --strip-filter: brightness(0);
+    --strip-opacity: 0.5;
     --border-color: #e9ecef;
     --shadow: 0 8px 30px rgba(0,0,0,0.08);
     --header-bg: rgba(248, 249, 250, 0.85);
@@ -274,6 +290,29 @@ ul {
     transform: scaleX(1);
 }
 
+.nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Only shown under 768px, where the inline links are replaced by a dropdown. */
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-main);
+    font-size: 1.6rem;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-fast);
+}
+
+.nav-toggle:hover {
+    color: var(--accent);
+}
+
 .theme-toggle {
     background: none;
     border: none;
@@ -330,8 +369,11 @@ ul {
 .hero {
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
     padding-top: 80px; /* Offset for header */
+    padding-bottom: 2.5rem; /* keeps the logo strip inside the first screen */
     position: relative;
     overflow: hidden;
 }
@@ -362,6 +404,55 @@ ul {
     gap: 4rem;
     position: relative;
     z-index: 1;
+}
+
+/* Credibility strip: monochrome so four brands read as one quiet row and
+   never fight the portrait; each logo returns to its real colours on hover. */
+.hero-logos {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 2rem auto 0;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.hero-logos-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1.1rem;
+}
+
+.hero-logos-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem 3rem;
+}
+
+.hero-logos-list img {
+    display: block;
+    height: 26px;
+    width: auto;
+    filter: var(--strip-filter);
+    opacity: var(--strip-opacity);
+    transition: filter var(--transition-normal), opacity var(--transition-normal), transform var(--transition-normal);
+}
+
+/* The school marks are finer-lined and carry internal padding, so they need
+   more height than the wordmarks to read at the same visual weight. */
+.hero-logos-list li:nth-child(n + 3) img {
+    height: 34px;
+}
+
+.hero-logos-list img:hover {
+    filter: none;
+    opacity: 1;
+    transform: translateY(-2px);
 }
 
 /* Reserved during the scramble so resolving glyphs never reflow the headline. */
@@ -465,7 +556,10 @@ ul {
     z-index: 0;
 }
 
+/* Fallback photo and head-tracker canvas share one grid cell so the swap
+   between them is invisible and nothing shifts when the frames arrive. */
 .tilt-stage {
+    display: grid;
     position: relative;
     z-index: 1;
     transform-style: preserve-3d;
@@ -490,6 +584,26 @@ ul {
 
 .tilt-wrap:hover .profile-pic {
     border-color: var(--accent);
+}
+
+.tilt-stage > .profile-pic {
+    grid-area: 1 / 1;
+}
+
+/* Head tracker: drawn by script.js from pre-cut video frames. Invisible until
+   every frame has loaded, then it takes over from the static photo. */
+.head-tracker {
+    background-color: #ffffff; /* frames are shot on white */
+    opacity: 0;
+    transition: opacity 0.5s ease, border-color var(--transition-normal);
+}
+
+.head-tracker.is-ready {
+    opacity: 1;
+}
+
+#portrait-fallback.is-hidden {
+    visibility: hidden;
 }
 
 /* Shared tilt language echoed on cards (see .card, .timeline-content) so the
@@ -636,6 +750,47 @@ ul {
     gap: 1rem;
 }
 
+/* Organisation logos sit on a fixed white plate in both themes: most marks
+   are dark-on-transparent and would disappear on the dark cards. */
+.logo-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.logo-plate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    padding: 0 var(--plate-pad-x);
+    background-color: var(--plate-bg);
+    border: 1px solid var(--plate-border);
+    border-radius: 10px;
+    box-shadow: var(--plate-shadow);
+}
+
+.logo-plate img {
+    display: block;
+    height: 22px;
+    width: auto;
+}
+
+/* Larger plate for the school marks at the head of the education cards. */
+.logo-row-lg {
+    margin-bottom: 1.5rem;
+}
+
+.logo-plate-lg {
+    height: 68px;
+    padding: 0 calc(var(--plate-pad-x) * 1.3);
+}
+
+.logo-plate-lg img {
+    height: 44px;
+}
+
 .timeline-header h3 {
     font-size: 1.3rem;
     margin-bottom: 0.2rem;
@@ -651,7 +806,7 @@ ul {
     font-size: 0.9rem;
     color: var(--accent);
     font-weight: 600;
-    background-color: rgba(255, 122, 0, 0.1);
+    background-color: rgba(var(--mesh-node), 0.1);
     padding: 0.3rem 0.8rem;
     border-radius: 20px;
 }
@@ -681,7 +836,7 @@ ul {
 /* Cards (Education & Projects) */
 .card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
     gap: 2rem;
 }
 
@@ -696,12 +851,6 @@ ul {
 
 .card:hover {
     border-color: var(--accent);
-}
-
-.card-icon {
-    font-size: 2.5rem;
-    color: var(--accent);
-    margin-bottom: 1.5rem;
 }
 
 .card-header {
@@ -756,7 +905,7 @@ ul {
     font-size: 0.75rem;
     font-weight: 600;
     color: var(--accent);
-    background-color: rgba(255, 122, 0, 0.1);
+    background-color: rgba(var(--mesh-node), 0.1);
     padding: 0.3rem 0.8rem;
     border-radius: 20px;
 }
@@ -764,6 +913,149 @@ ul {
 .project-card h3 {
     margin-bottom: 1rem;
     font-size: 1.4rem;
+}
+
+/* Featured (most recent) project: full width, with the product's own mark as
+   the live-demo link and a GitHub icon beside it. */
+.project-featured {
+    grid-column: 1 / -1;
+}
+
+.project-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.project-top .project-tags {
+    margin-bottom: 0;
+}
+
+/* Tags and buttons no longer fit side by side: stack, tags first. */
+@media (max-width: 640px) {
+    .project-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}
+
+.project-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    flex: none;
+}
+
+/* Labelled so it reads as a button, not decoration: mark + words + the
+   external-link arrow all say "this leaves the page". */
+.project-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.9rem 0.4rem 0.45rem;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-main);
+    transition: border-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), background-color var(--transition-fast);
+}
+
+.project-btn i {
+    font-size: 1.15rem;
+}
+
+.project-btn > i:first-child {
+    font-size: 1.5rem;
+    margin-left: 0.2rem;
+}
+
+.project-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.project-btn-live {
+    border-color: var(--logo-bg);
+    background-color: rgba(var(--mesh-node), 0.06);
+}
+
+.project-btn-live:hover {
+    background-color: rgba(var(--mesh-node), 0.12);
+}
+
+.project-btn-live .bx-link-external {
+    color: var(--text-muted);
+    transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.project-btn-live:hover .bx-link-external {
+    color: var(--accent);
+    transform: translate(2px, -2px);
+}
+
+/* SoHired's own mark, recoloured per theme to match the app: deep purple on
+   light, soft lavender on dark. */
+.sohired-mark {
+    width: 28px;
+    height: 28px;
+    flex: none;
+}
+
+.sohired-mark circle {
+    fill: var(--logo-bg);
+}
+
+.sohired-mark text {
+    fill: var(--logo-fg);
+    font-family: 'Outfit', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.project-hint {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.project-hint i {
+    flex: none;
+    margin-top: 0.15rem;
+    font-size: 1rem;
+    color: var(--accent);
+}
+
+.project-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 2rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.project-stats strong {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.3rem;
+    color: var(--accent);
+    margin-right: 0.3rem;
+}
+
+.project-card em {
+    color: var(--text-main);
+    font-style: italic;
 }
 
 .project-card p {
@@ -774,7 +1066,7 @@ ul {
 /* Skills Grid */
 .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
     gap: 2rem;
 }
 
@@ -927,8 +1219,39 @@ footer p {
 }
 
 @media (max-width: 768px) {
+    .nav-toggle {
+        display: flex;
+    }
+
     .nav-links {
-        display: none; /* In a real app, implement a hamburger menu here */
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        padding: 0.5rem 1rem 1rem;
+        background-color: var(--bg-main);
+        border-bottom: 1px solid var(--border-color);
+        box-shadow: var(--shadow);
+    }
+
+    .nav-links.open {
+        display: flex;
+    }
+
+    .nav-link {
+        padding: 0.8rem 0.5rem;
+        font-size: 1.05rem;
+    }
+
+    .nav-link::after {
+        display: none;
+    }
+
+    .nav-link.active {
+        color: var(--accent);
     }
     
     .section {
@@ -939,8 +1262,46 @@ footer p {
         flex-direction: column;
         gap: 0.5rem;
     }
-    
+
     .skills-grid {
         grid-template-columns: 1fr;
+    }
+
+    /* The desktop indent (spine gutter + card padding) leaves a ~130px text
+       column on a phone. Pull the spine to the edge and tighten the card. */
+    .timeline::before,
+    .timeline-trace {
+        left: 7px;
+    }
+
+    .timeline-item {
+        padding-left: 1.75rem;
+    }
+
+    .timeline-dot {
+        left: 0;
+    }
+
+    .timeline-content {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .card,
+    .skill-category {
+        padding: 1.5rem;
+    }
+
+    .skill-category-header {
+        margin-bottom: 1.25rem;
+    }
+
+    .skill-chips {
+        gap: 0.6rem;
+    }
+
+    .skill-chips span {
+        padding: 0.5rem 0.9rem;
     }
 }
