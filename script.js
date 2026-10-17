@@ -641,7 +641,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const hctx = headCanvas.getContext('2d');
         const frames = new Array(FRAME_COUNT);
-        let loaded = 0;
+        const isLoaded = new Array(FRAME_COUNT).fill(false);
         let ready = false;
         let shown = -1;
 
@@ -670,10 +670,23 @@ document.addEventListener('DOMContentLoaded', () => {
             return a + (b - a) * (slot - k);
         };
 
+        // While frames are still arriving, draw the nearest one that has.
+        const nearestLoaded = (index) => {
+            if (isLoaded[index]) return index;
+            for (let d = 1; d <= FRAME_COUNT / 2; d++) {
+                const before = (index - d + FRAME_COUNT) % FRAME_COUNT;
+                const after = (index + d) % FRAME_COUNT;
+                if (isLoaded[before]) return before;
+                if (isLoaded[after]) return after;
+            }
+            return -1;
+        };
+
         const paint = (index) => {
-            if (index === shown || !frames[index]) return;
-            shown = index;
-            hctx.drawImage(frames[index], 0, 0, headCanvas.width, headCanvas.height);
+            const frame = nearestLoaded(index);
+            if (frame < 0 || frame === shown) return;
+            shown = frame;
+            hctx.drawImage(frames[frame], 0, 0, headCanvas.width, headCanvas.height);
         };
 
         const headTick = (now) => {
@@ -724,6 +737,7 @@ document.addEventListener('DOMContentLoaded', () => {
             paint(CENTER);
             headCanvas.classList.add('is-ready');
             // Hide the static photo only once the canvas has faded in over it.
+            // (It is the same straight-on frame, so the handover is invisible.)
             setTimeout(() => headFallback && headFallback.classList.add('is-hidden'), 550);
 
             if (reducedMotion) return;
@@ -740,15 +754,41 @@ document.addEventListener('DOMContentLoaded', () => {
             }).observe(headCanvas);
         };
 
-        for (let i = 0; i < FRAME_COUNT; i++) {
+        // Load order: the straight-on frame first (the page is interactive as
+        // soon as it lands), then evenly spaced frames at ever finer strides, so
+        // tracking is usable almost immediately and sharpens as the rest arrive.
+        const loadOrder = [CENTER];
+        const queued = new Set(loadOrder);
+        for (const stride of [32, 16, 8, 4, 2, 1]) {
+            for (let i = 0; i < FRAME_COUNT; i += stride) {
+                if (!queued.has(i)) { queued.add(i); loadOrder.push(i); }
+            }
+        }
+
+        const loadFrame = (i) => new Promise((resolve) => {
             const img = new Image();
             img.decoding = 'async';
-            img.onload = img.onerror = () => {
-                if (++loaded === FRAME_COUNT) onReady();
+            if (i !== CENTER) img.fetchPriority = 'low';
+            img.onload = () => {
+                frames[i] = img;
+                isLoaded[i] = true;
+                if (i === CENTER) onReady();
+                else if (ready) paint(Math.round(pos) % FRAME_COUNT);
+                resolve();
             };
+            img.onerror = resolve;
             img.src = `assets/head/${String(i).padStart(3, '0')}.webp`;
-            frames[i] = img;
-        }
+        });
+
+        // A handful in flight at once: fast, but never crowding out the page's
+        // own CSS, fonts and icons.
+        loadFrame(CENTER).then(() => {
+            let next = 1;
+            const worker = async () => {
+                while (next < loadOrder.length) await loadFrame(loadOrder[next++]);
+            };
+            for (let w = 0; w < 4; w++) worker();
+        });
     }
 
     // Mobile menu

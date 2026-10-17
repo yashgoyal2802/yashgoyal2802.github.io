@@ -23,7 +23,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- The straight-on portrait frame is the first thing painted; start it now. -->
+    <link rel="preload" as="image" href="assets/head/210.webp" fetchpriority="high">
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <!-- Boxicons for icons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
@@ -102,7 +105,7 @@
                 <div class="hero-image animate-in-right">
                     <div class="tilt-wrap">
                         <div class="tilt-stage">
-                            <img src="assets/profile-pic.png" alt="Yash Goyal" class="profile-pic" id="portrait-fallback">
+                            <img src="assets/head/210.webp" alt="Yash Goyal" class="profile-pic" id="portrait-fallback" width="480" height="480" fetchpriority="high" decoding="async">
                             <canvas id="head-tracker" class="profile-pic head-tracker" width="480" height="480" role="img" aria-label="Yash Goyal. His head follows your cursor."></canvas>
                         </div>
                     </div>
