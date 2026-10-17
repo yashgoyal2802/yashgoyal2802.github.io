@@ -22,6 +22,8 @@
     --accent-hover: #e66e00;
     --flare: #FF3B30; /* Threat state in the hero mesh */
     --mesh-node: 255, 122, 0;
+    --logo-bg: #d6b9fa; /* SoHired mark, dark theme */
+    --logo-fg: #3a1a5c;
     --border-color: #333333;
     --shadow: 0 8px 30px rgba(0,0,0,0.4);
     --header-bg: rgba(18, 18, 18, 0.85);
@@ -38,6 +40,8 @@
     --accent-hover: #cc5200;
     --flare: #D62B20; /* Threat state in the hero mesh */
     --mesh-node: 230, 92, 0;
+    --logo-bg: #350859; /* SoHired mark, light theme */
+    --logo-fg: #ffffff;
     --border-color: #e9ecef;
     --shadow: 0 8px 30px rgba(0,0,0,0.08);
     --header-bg: rgba(248, 249, 250, 0.85);
@@ -810,6 +814,149 @@ ul {
 .project-card h3 {
     margin-bottom: 1rem;
     font-size: 1.4rem;
+}
+
+/* Featured (most recent) project: full width, with the product's own mark as
+   the live-demo link and a GitHub icon beside it. */
+.project-featured {
+    grid-column: 1 / -1;
+}
+
+.project-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.project-top .project-tags {
+    margin-bottom: 0;
+}
+
+/* Tags and buttons no longer fit side by side: stack, tags first. */
+@media (max-width: 640px) {
+    .project-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}
+
+.project-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    flex: none;
+}
+
+/* Labelled so it reads as a button, not decoration: mark + words + the
+   external-link arrow all say "this leaves the page". */
+.project-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.9rem 0.4rem 0.45rem;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-main);
+    transition: border-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), background-color var(--transition-fast);
+}
+
+.project-btn i {
+    font-size: 1.15rem;
+}
+
+.project-btn > i:first-child {
+    font-size: 1.5rem;
+    margin-left: 0.2rem;
+}
+
+.project-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.project-btn-live {
+    border-color: var(--logo-bg);
+    background-color: rgba(var(--mesh-node), 0.06);
+}
+
+.project-btn-live:hover {
+    background-color: rgba(var(--mesh-node), 0.12);
+}
+
+.project-btn-live .bx-link-external {
+    color: var(--text-muted);
+    transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.project-btn-live:hover .bx-link-external {
+    color: var(--accent);
+    transform: translate(2px, -2px);
+}
+
+/* SoHired's own mark, recoloured per theme to match the app: deep purple on
+   light, soft lavender on dark. */
+.sohired-mark {
+    width: 28px;
+    height: 28px;
+    flex: none;
+}
+
+.sohired-mark rect {
+    fill: var(--logo-bg);
+}
+
+.sohired-mark text {
+    fill: var(--logo-fg);
+    font-family: 'Outfit', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.project-hint {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.project-hint i {
+    flex: none;
+    margin-top: 0.15rem;
+    font-size: 1rem;
+    color: var(--accent);
+}
+
+.project-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 2rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.project-stats strong {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.3rem;
+    color: var(--accent);
+    margin-right: 0.3rem;
+}
+
+.project-card em {
+    color: var(--text-main);
+    font-style: italic;
 }
 
 .project-card p {
