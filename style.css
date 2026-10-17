@@ -686,6 +686,32 @@ ul {
     gap: 1rem;
 }
 
+/* Organisation logos sit on a fixed white plate in both themes: most marks
+   are dark-on-transparent and would disappear on the dark cards. */
+.logo-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+}
+
+.logo-plate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    padding: 0 0.85rem;
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+}
+
+.logo-plate img {
+    display: block;
+    height: 22px;
+    width: auto;
+}
+
 .timeline-header h3 {
     font-size: 1.3rem;
     margin-bottom: 0.2rem;
