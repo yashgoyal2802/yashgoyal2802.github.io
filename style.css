@@ -908,7 +908,7 @@ ul {
     flex: none;
 }
 
-.sohired-mark rect {
+.sohired-mark circle {
     fill: var(--logo-bg);
 }
 
