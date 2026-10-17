@@ -552,13 +552,34 @@ document.addEventListener('DOMContentLoaded', () => {
         const duration = 1200;
         const perChar = duration / finalText.length;
 
-        // Lock the resolved width before any glyph swapping starts.
-        scrambleTarget.style.minWidth = `${scrambleTarget.getBoundingClientRect().width}px`;
-
         // Each character locks in turn, strictly left to right.
         const settleAt = Array.from(finalText, (_, i) => i * perChar);
 
-        const startedAt = performance.now();
+        // Rests 3–4s between runs, measured from the moment a run resolves.
+        const REPLAY_MIN = 3000;
+        const REPLAY_JITTER = 1000;
+
+        const scheduleReplay = () => {
+            setTimeout(() => {
+                // Nothing to see off screen or in a background tab; check again later.
+                const rect = scrambleTarget.getBoundingClientRect();
+                const onScreen = rect.bottom > 0 && rect.top < window.innerHeight;
+                if (document.hidden || !onScreen) {
+                    scheduleReplay();
+                    return;
+                }
+                runScramble();
+            }, REPLAY_MIN + Math.random() * REPLAY_JITTER);
+        };
+
+        let startedAt = 0;
+
+        const runScramble = () => {
+            // Lock the resolved width before any glyph swapping starts.
+            scrambleTarget.style.minWidth = `${scrambleTarget.getBoundingClientRect().width}px`;
+            startedAt = performance.now();
+            requestAnimationFrame(scrambleFrame);
+        };
 
         const scrambleFrame = (now) => {
             const elapsed = now - startedAt;
@@ -583,12 +604,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (done) {
                 scrambleTarget.style.minWidth = '';
+                scheduleReplay();
                 return;
             }
             requestAnimationFrame(scrambleFrame);
         };
 
-        requestAnimationFrame(scrambleFrame);
+        runScramble();
     }
 
     // ---------------------------------------------------------------
