@@ -11,7 +11,7 @@
     --section-padding: 5rem 1.5rem;
 }
 
-/* Dark Mode (Default) */
+/* Dark Mode (opt-in via the toggle; light is the default) */
 [data-theme="dark"] {
     --bg-main: #121212;
     --bg-alt: #1a1a1a;

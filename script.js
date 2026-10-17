@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeIcon = document.getElementById('theme-icon');
     const htmlElement = document.documentElement;
 
-    // Check local storage for theme preference, default to dark
-    const savedTheme = localStorage.getItem('theme') || 'dark';
+    // Check local storage for theme preference, default to light
+    const savedTheme = localStorage.getItem('theme') || 'light';
     setTheme(savedTheme);
 
     themeToggleBtn.addEventListener('click', () => {
