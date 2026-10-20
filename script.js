@@ -648,15 +648,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const headFallback = document.getElementById('portrait-fallback');
 
     if (headCanvas && headCanvas.getContext) {
-        const FRAME_COUNT = 212;
-        const CENTER = 210; // straight-on, eyes to camera; also the ring's seam
-        const ANGLES = [79,80,81,84,85,86,88,90,93,94,95,95,96,98,100,102,105,107,110,114,116,119,120,123,125,128,134,137,139,141,144,145,148,149,155,159,160,163,165,167,168,168,169,171,174,175,182,194,192,192,192,20,20,20,24,26,27,30,34,39,45,47,49,58,62,72,73,74,75,76,77,78];
+        const FRAME_COUNT = 221;
+        const CENTER = 212; // straight-on, eyes to camera; also the ring's seam
+        const ANGLES = [85,91,92,97,99,100,101,102,103,104,105,106,107,108,110,111,113,115,118,121,122,124,126,127,129,131,132,134,137,139,141,143,147,152,166,168,169,170,172,173,174,175,180,185,190,191,191,191,191,191,18,18,18,18,18,26,29,36,39,43,45,47,50,56,67,71,74,76,77,78,78,83];
         // Cursor inside this radius (fraction of viewport width) = eye contact.
         const DEADZONE = 0.12;
         // Frames advanced per 60fps tick: easing factor, and a ceiling so a
         // flick across the page plays the in-between frames instead of skipping.
         const EASE = 0.16;
         const MAX_STEP = 2.4;
+        // Mean pixel change between each frame and the next. The clip's head
+        // moves faster in some stretches than others, so the glide divides its
+        // speed by this to keep the on-screen movement even.
+        const MOTION = [2.0,2.5,3.0,3.3,3.3,3.2,3.2,3.2,3.2,3.1,3.1,3.0,2.9,2.9,3.0,3.0,2.9,2.7,2.4,2.1,1.7,1.6,1.8,2.0,2.1,2.1,2.2,2.3,2.4,2.4,2.4,2.1,2.2,2.8,3.1,3.1,3.0,2.5,2.0,1.8,1.9,2.3,2.8,2.9,2.9,3.0,3.1,2.9,2.8,2.8,2.9,3.2,3.3,3.1,2.8,2.5,2.5,2.6,2.5,2.5,2.6,2.7,2.6,2.2,2.2,2.5,2.9,2.8,2.3,2.1,2.4,3.0,3.3,3.3,3.2,3.2,3.2,3.4,3.5,3.4,3.2,3.0,2.9,2.8,2.6,2.5,2.3,2.2,2.0,1.8,1.9,2.1,2.2,2.3,2.6,2.9,2.9,2.9,3.0,3.1,3.1,3.1,3.1,3.0,2.9,3.0,3.1,3.3,3.4,3.4,3.2,3.1,3.2,3.3,3.3,3.2,3.3,3.3,3.1,3.0,3.4,3.9,3.6,3.4,3.5,3.6,3.7,3.7,3.5,3.4,3.4,3.3,3.2,3.2,3.3,3.4,3.5,3.4,3.5,3.5,3.3,3.2,3.4,3.8,3.9,3.6,2.9,2.3,1.8,1.6,1.7,1.8,1.8,1.5,1.3,1.4,1.6,1.8,1.9,1.9,1.8,1.7,1.7,1.6,1.9,2.5,3.2,3.7,3.9,4.0,4.0,3.9,3.8,3.7,3.5,3.2,3.0,2.8,2.7,2.6,2.4,2.3,2.2,2.1,2.2,2.4,2.8,3.1,3.3,3.4,3.3,3.2,3.0,2.9,2.7,2.5,2.3,2.1,1.9,1.8,1.7,1.6,1.6,1.6,1.6,1.5,1.5,1.5,1.4,1.4,1.3,1.3,1.3,1.3,1.2,1.1,1.2,1.7,1.9,1.9,1.9];
+        const MOTION_BUDGET = 4.5;
+        const MIN_STEP = 0.6;
 
         const hctx = headCanvas.getContext('2d');
         const frames = new Array(FRAME_COUNT);
@@ -685,7 +691,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const b = ANGLES[(k + 1) % ANGLES.length];
             // The two ends of the clip's compass don't meet (up-left to up runs
             // through neutral); never interpolate across that gap.
-            if (Math.abs(b - a) > 12) return slot - k < 0.5 ? a : b;
+            if (Math.abs(b - a) > 30) return slot - k < 0.5 ? a : b;
             return a + (b - a) * (slot - k);
         };
 
@@ -713,7 +719,9 @@ document.addEventListener('DOMContentLoaded', () => {
             headLast = now;
 
             const d = ringDelta(pos, targetPos);
-            const limit = MAX_STEP * delta;
+            const here = Math.floor(pos) % FRAME_COUNT;
+            const motion = Math.max(MOTION[here], MOTION[(here + FRAME_COUNT - 1) % FRAME_COUNT]);
+            const limit = Math.max(MIN_STEP, Math.min(MAX_STEP, MOTION_BUDGET / motion)) * delta;
             const step = Math.max(-limit, Math.min(limit, d * Math.min(EASE * delta, 1)));
             pos = (pos + step + FRAME_COUNT) % FRAME_COUNT;
             paint(Math.round(pos) % FRAME_COUNT);
