@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 250" width="1000" height="250" role="img" aria-label="Selected work: Valar Deceptis, SoHired, Safe Pe, AI Learn">
+<style>
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; } }
+  .card { animation: rise .8s cubic-bezier(.16,1,.3,1) both; }
+</style>
+<g class="card" style="animation-delay:0.00s" transform="translate(0 0)">
+  <rect width="235" height="250" rx="18" fill="#141415" stroke="#2b2b2d"/>
+  <rect x="1" y="1" width="233" height="64" rx="17" fill="#FF7A00" fill-opacity=".07"/>
+  <rect x="20" y="22" width="81" height="22" rx="11" fill="#FF7A00" fill-opacity=".16"/>
+  <text x="60" y="37" text-anchor="middle" font-family="'SF Mono', Consolas, Menlo, 'DejaVu Sans Mono', monospace" font-size="10.5" font-weight="700" fill="#FF7A00" letter-spacing="1">HACKATHON</text>
+  <text x="20" y="96" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="24" font-weight="800" fill="#f8f9fa" letter-spacing="-.5">Valar Deceptis</text>
+  <text x="20" y="128" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="13" fill="#a4a4aa">A RAG and LLM tool for</text><text x="20" y="149" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="13" fill="#a4a4aa">real-time threat intel.</text><text x="20" y="170" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="13" fill="#a4a4aa">Beat 32 teams and went</text><text x="20" y="191" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="13" fill="#a4a4aa">live at the client.</text>
+  <line x1="20" y1="206" x2="215" y2="206" stroke="#2b2b2d"/>
+  <text x="20" y="231" font-family="'SF Mono', Consolas, Menlo, 'DejaVu Sans Mono', monospace" font-size="12" font-weight="700" fill="#FF7A00">First customer onboarded</text>
+</g><g class="card" style="animation-delay:0.14s" transform="translate(255 0)">
+  <rect width="235" height="250" rx="18" fill="#141415" stroke="#2b2b2d"/>
+  <rect x="1" y="1" width="233" height="64" rx="17" fill="#FF7A00" fill-opacity=".07"/>
+  <rect x="20" y="22" width="66" height="22" rx="11" fill="#FF7A00" fill-opacity=".16"/>
+  <text x="53" y="37" text-anchor="middle" font-family="'SF Mono', Consolas, Menlo, 'DejaVu Sans Mono', monospace" font-size="10.5" font-weight="700" fill="#FF7A00" letter-spacing="1">PROJECT</text>
+  <text x="20" y="96" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="24" font-weight="800" fill="#f8f9fa" letter-spacing="-.5">SoHired</text>
+  <text x="20" y="128" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="13" fill="#a4a4aa">A sourced, sector-aware</text><text x="20" y="149" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="13" fill="#a4a4aa">interview brief per</text><text x="20" y="170" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="13" fill="#a4a4aa">company. Built solo, live</text><text x="20" y="191" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="13" fill="#a4a4aa">in under 24 hours.</text>
+  <line x1="20" y1="206" x2="215" y2="206" stroke="#2b2b2d"/>
+  <text x="20" y="231" font-family="'SF Mono', Consolas, Menlo, 'DejaVu Sans Mono', monospace" font-size="12" font-weight="700" fill="#FF7A00">7 releases, 183 tests</text>
+</g><g class="card" style="animation-delay:0.28s" transform="translate(510 0)">
+  <rect width="235" height="250" rx="18" fill="#141415" stroke="#2b2b2d"/>
+  <rect x="1" y="1" width="233" height="64" rx="17" fill="#FF7A00" fill-opacity=".07"/>
+  <rect x="20" y="22" width="66" height="22" rx="11" fill="#FF7A00" fill-opacity=".16"/>
+  <text x="53" y="37" text-anchor="middle" font-family="'SF Mono', Consolas, Menlo, 'DejaVu Sans Mono', monospace" font-size="10.5" font-weight="700" fill="#FF7A00" letter-spacing="1">PROJECT</text>
+  <text x="20" y="96" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="24" font-weight="800" fill="#f8f9fa" letter-spacing="-.5">Safe Pe</text>
+  <text x="20" y="128" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="13" fill="#a4a4aa">Payments that are fast</text><text x="20" y="149" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="13" fill="#a4a4aa">and secure. A hybrid</text><text x="20" y="170" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="13" fill="#a4a4aa">AES + ECC scheme in place</text><text x="20" y="191" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="13" fill="#a4a4aa">of plain RSA.</text>
+  <line x1="20" y1="206" x2="215" y2="206" stroke="#2b2b2d"/>
+  <text x="20" y="231" font-family="'SF Mono', Consolas, Menlo, 'DejaVu Sans Mono', monospace" font-size="12" font-weight="700" fill="#FF7A00">86% more efficient</text>
+</g><g class="card" style="animation-delay:0.42s" transform="translate(765 0)">
+  <rect width="235" height="250" rx="18" fill="#141415" stroke="#2b2b2d"/>
+  <rect x="1" y="1" width="233" height="64" rx="17" fill="#FF7A00" fill-opacity=".07"/>
+  <rect x="20" y="22" width="66" height="22" rx="11" fill="#FF7A00" fill-opacity=".16"/>
+  <text x="53" y="37" text-anchor="middle" font-family="'SF Mono', Consolas, Menlo, 'DejaVu Sans Mono', monospace" font-size="10.5" font-weight="700" fill="#FF7A00" letter-spacing="1">PROJECT</text>
+  <text x="20" y="96" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="24" font-weight="800" fill="#f8f9fa" letter-spacing="-.5">AI Learn</text>
+  <text x="20" y="128" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="13" fill="#a4a4aa">Personalised learning plans</text><text x="20" y="149" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="13" fill="#a4a4aa">from performance data,</text><text x="20" y="170" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="13" fill="#a4a4aa">using an SVM classifier.</text>
+  <line x1="20" y1="206" x2="215" y2="206" stroke="#2b2b2d"/>
+  <text x="20" y="231" font-family="'SF Mono', Consolas, Menlo, 'DejaVu Sans Mono', monospace" font-size="12" font-weight="700" fill="#FF7A00">-50% time, +30% satisfaction</text>
+</g>
+</svg>
